@@ -2,6 +2,7 @@ import Nav from "../../components/nav";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { setCookie } from "nookies";
+import Head from "next/head";
 
 export default function UserNew() {
   const [username, setUsername] = useState("");
@@ -33,6 +34,9 @@ export default function UserNew() {
 
   return (
     <>
+      <Head>
+        <title>Créer un utilisateur - Nobody Games Alone</title>
+      </Head>
       <Nav title={true} />
 
       <div className="p-20 bg-gray-200 h-screen overflow-scroll pb-30">

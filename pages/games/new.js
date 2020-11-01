@@ -1,6 +1,7 @@
 import Nav from "../../components/nav";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 export default function GamesNew() {
   const [games, setGames] = useState([]);
@@ -50,6 +51,9 @@ export default function GamesNew() {
 
   return (
     <>
+      <Head>
+        <title>Ajouter des jeux - Nobody Games Alone</title>
+      </Head>
       <Nav title={true} />
 
       <div className="p-20 bg-gray-200 h-screen overflow-scroll pb-30">

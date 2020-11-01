@@ -3,6 +3,7 @@ const db = require("../db");
 import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import Head from "next/head";
 
 const localizer = momentLocalizer(moment);
 
@@ -31,6 +32,9 @@ export default function Dashboard({ games, timeslots }) {
   }));
   return (
     <>
+      <Head>
+        <title>Dashboard - Nobody Games Alone</title>
+      </Head>
       <Nav title={true} />
       <div className="p-20 bg-gray-200 h-screen overflow-scroll pb-30">
         <h3 className="text-center text-2xl">Ma dashboard</h3>

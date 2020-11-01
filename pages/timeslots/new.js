@@ -4,6 +4,7 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const localizer = momentLocalizer(moment);
 // Make a better function to generate IDs, checking the existing ones
@@ -42,6 +43,9 @@ export default function TimeslotsNew() {
 
   return (
     <>
+      <Head>
+        <title>Ajouter des disponibilités - Nobody Games Alone</title>
+      </Head>
       <Nav title={true} />
 
       <div className="p-20 bg-gray-200 h-screen overflow-scroll pb-30">
