@@ -3,7 +3,7 @@ const db = require("../../../db");
 export default async function index(req, res) {
   const games = JSON.parse(req.body)
     .map(({ name, id }) => {
-      return `('${name}', '${id}')`;
+      return `('${name.replace("'", "''")}', '${id}')`;
     })
     .join(",");
 

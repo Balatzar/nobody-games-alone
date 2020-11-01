@@ -3,6 +3,7 @@ import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 const localizer = momentLocalizer(moment);
 // Make a better function to generate IDs, checking the existing ones
@@ -11,6 +12,7 @@ let id = 0;
 
 export default function TimeslotsNew() {
   const [events, setEvents] = useState([]);
+  const router = useRouter();
 
   const clickEvent = (event) => {
     if (confirm("Voulez-vous supprimer cette disponibilité ?")) {
@@ -31,7 +33,7 @@ export default function TimeslotsNew() {
     fetch(`/api/timeslots`, query).then((res) => {
       if (res.status === 200) {
         console.log(res);
-        // router.push("/timeslots/new");
+        router.push("/dashboard");
       } else {
         res.json().then((error) => console.warn(error));
       }
