@@ -5,6 +5,8 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useState } from "react";
 
 const localizer = momentLocalizer(moment);
+// Make a better function to generate IDs, checking the existing ones
+// when we get some from the DB
 let id = 0;
 
 export default function TimeslotsNew() {
@@ -18,6 +20,22 @@ export default function TimeslotsNew() {
         ...events.slice(eventToDeleteIndex + 1),
       ]);
     }
+  };
+
+  const submitEvents = () => {
+    const query = {
+      method: "POST",
+      body: JSON.stringify(events),
+    };
+
+    fetch(`/api/timeslots`, query).then((res) => {
+      if (res.status === 200) {
+        console.log(res);
+        // router.push("/timeslots/new");
+      } else {
+        res.json().then((error) => console.warn(error));
+      }
+    });
   };
 
   return (
@@ -44,11 +62,10 @@ export default function TimeslotsNew() {
       <footer className="bg-white justify-center p-4 flex fixed w-full bottom-0 h-32">
         <button
           type="button"
-          disabled={!Object.keys([]).length}
-          className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center absolute ${!Object.keys(
-            []
-          ).length && "opacity-50 cursor-not-allowed"}`}
-          onClick={() => {}}
+          disabled={!events.length}
+          className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center absolute ${!events.length &&
+            "opacity-50 cursor-not-allowed"}`}
+          onClick={submitEvents}
         >
           Disponibilités sélectionnés
         </button>

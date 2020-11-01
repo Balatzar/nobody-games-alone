@@ -1,18 +1,16 @@
 const db = require("../../../db");
 
 export default async function index(req, res) {
-  const games = JSON.parse(req.body)
-    .map(({ name, id }) => {
-      return `('${name}', '${id}')`;
+  const timeslots = JSON.parse(req.body)
+    .map(({ start, end }) => {
+      return `('${start}', '${end}')`;
     })
     .join(",");
 
   const query = `
-    INSERT INTO games (name, igdb_id)
+    INSERT INTO timeslots (start_time, end_time)
     VALUES
-      ${games}
-    ON CONFLICT ON CONSTRAINT games_name_key
-    DO NOTHING;
+      ${timeslots};
   `;
 
   try {

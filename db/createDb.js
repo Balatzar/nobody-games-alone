@@ -8,6 +8,13 @@ const db = require("../db");
       name VARCHAR NOT NULL UNIQUE,
       igdb_id VARCHAR NOT NULL UNIQUE
     );
+
+    DROP TABLE IF EXISTS timeslots;
+    CREATE TABLE timeslots (
+      id SERIAL PRIMARY KEY,
+      start_time TIMESTAMPTZ NOT NULL,
+      end_time TIMESTAMPTZ NOT NULL
+    )
   `);
   console.log(res);
 
