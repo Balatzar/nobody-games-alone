@@ -1,6 +1,13 @@
 const db = require("../db");
 
-db.query("SELECT NOW()", (err, res) => {
-  console.log(err, res);
-  db.end();
-});
+(async function() {
+  const res = await db.query(`
+    DROP TABLE IF EXISTS games;
+    CREATE TABLE games (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR NOT NULL UNIQUE,
+      igdb_id VARCHAR NOT NULL UNIQUE
+    );
+  `);
+  console.log(res);
+})();

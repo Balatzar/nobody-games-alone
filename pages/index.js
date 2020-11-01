@@ -36,7 +36,11 @@ export default function IndexPage() {
           <li>
             <b>Wizard création de compte</b>
             <ul className="list-decimal pl-6">
-              <li>Créer un compte via le systeme de 8base</li>
+              <li>
+                Créer des utilisateur via un token stocké sur le local storage
+                (on s'embete pas pour l'instant avec des comptes email/password
+                - systeme de claim plus tard)
+              </li>
               <li>
                 Choisir des jeux via la rechercher IGDB et les stocker dans
                 8base s'ils n'existent pas
@@ -68,6 +72,9 @@ export default function IndexPage() {
             <b>Technique</b>
             <ul className="list-decimal pl-6">
               <li>
+                IMPORTANT Refacto les queries SQL pour utiliser les parametres
+              </li>
+              <li>
                 Refactoriser les fetchs pour utiliser SWR et mettre en place de
                 l'error handling et du loading
               </li>
@@ -80,6 +87,10 @@ export default function IndexPage() {
               <li>
                 Un import steam selectif (on récupere tous les jeux et
                 l'utilisateur check ceux qu'il ou elle veut importer)
+              </li>
+              <li>
+                Permettre de claim un compte temporaire et créer des comptes
+                classiques
               </li>
             </ul>
           </li>

@@ -10,3 +10,63 @@
 2020-11-01 11:12:11.075 CET [20456] STATEMENT:  select current_state;
 2020-11-01 11:12:21.703 CET [20456] ERROR:  column "version" does not exist at character 8
 2020-11-01 11:12:21.703 CET [20456] STATEMENT:  select version
+2020-11-01 11:44:37.468 CET [23214] ERROR:  syntax error at or near "name" at character 61
+2020-11-01 11:44:37.468 CET [23214] STATEMENT:  
+	    CREATE TABLE games (
+	      id SERIAL PRIMARY KEY
+	      name VARCHAR NOT NULL
+	      igdb_id VARCHAR NOT NULL
+	    )
+	  
+2020-11-01 11:45:53.813 CET [23319] ERROR:  relation "games" already exists
+2020-11-01 11:45:53.813 CET [23319] STATEMENT:  
+	    CREATE TABLE games (
+	      id SERIAL PRIMARY KEY,
+	      name VARCHAR NOT NULL,
+	      igdb_id VARCHAR NOT NULL
+	    )
+	  
+2020-11-01 11:54:24.439 CET [23948] ERROR:  syntax error at or near "World" at character 64
+2020-11-01 11:54:24.439 CET [23948] STATEMENT:  
+	    INSERT INTO games (name, igdb_id)
+	    VALUES
+	      (Hello World, 132633)
+	  
+2020-11-01 11:55:17.677 CET [24036] ERROR:  syntax error at or near "World" at character 64
+2020-11-01 11:55:17.677 CET [24036] STATEMENT:  
+	    INSERT INTO games (name, igdb_id)
+	    VALUES
+	      (Hello World, 132633)
+	  
+2020-11-01 11:58:16.654 CET [24292] ERROR:  duplicate key value violates unique constraint "games_name_key"
+2020-11-01 11:58:16.654 CET [24292] DETAIL:  Key (name)=(Hello World) already exists.
+2020-11-01 11:58:16.654 CET [24292] STATEMENT:  
+	    INSERT INTO games (name, igdb_id)
+	    VALUES
+	      ('Hello World', '132633')
+	  
+2020-11-01 12:03:37.839 CET [24787] ERROR:  duplicate key value violates unique constraint "games_igdb_id_key"
+2020-11-01 12:03:37.839 CET [24787] DETAIL:  Key (igdb_id)=(132633) already exists.
+2020-11-01 12:03:37.839 CET [24787] STATEMENT:  
+	    INSERT INTO games (name, igdb_id)
+	    VALUES
+	      ('Helloo World', '132633')
+	    ON CONFLICT ON CONSTRAINT games_name_key
+	    DO NOTHING;
+	  
+2020-11-01 12:04:35.785 CET [24885] ERROR:  syntax error at or near "," at character 127
+2020-11-01 12:04:35.785 CET [24885] STATEMENT:  
+	    INSERT INTO games (name, igdb_id)
+	    VALUES
+	      ('Hello World', '132633')
+	    ON CONFLICT ON CONSTRAINT games_name_key, games_igdb_id_key
+	    DO NOTHING;
+	  
+2020-11-01 12:05:53.711 CET [24998] ERROR:  syntax error at or near "games_igdb_id_key" at character 129
+2020-11-01 12:05:53.711 CET [24998] STATEMENT:  
+	    INSERT INTO games (name, igdb_id)
+	    VALUES
+	      ('Helloo World', '132633')
+	    ON CONFLICT ON CONSTRAINT games_name_key games_igdb_id_key
+	    DO NOTHING;
+	  

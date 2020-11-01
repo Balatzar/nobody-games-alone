@@ -1,29 +1,24 @@
-import { Client } from "@8base/api-client";
+const db = require("../../../db");
 
 export default async function create(req, res) {
-  const client = new Client(process.env.EIGHT_BASE_URL);
-
-  client.setIdToken(process.env.EIGHT_BASE_TOKEN);
-
   const games = JSON.parse(req.body).reduce((acc, { name, id }) => {
-    acc += `{name: "${name}", igdb_id: ${id}}`;
+    acc += `('${name}', '${id}')`;
     return acc;
   }, "");
+
   const query = `
-  mutation {
-    gameCreateMany(data: [${games}]) {
-      items {
-        name
-      }
-    }
-  }
-`;
+    INSERT INTO games (name, igdb_id)
+    VALUES
+      ${games}
+    ON CONFLICT ON CONSTRAINT games_name_key
+    DO NOTHING;
+  `;
 
   try {
-    const response = await client.request(query);
+    const response = await db.query(query);
 
     res.statusCode = 200;
-    res.end(JSON.stringify(response));
+    res.end(JSON.stringify(response.rows));
   } catch (error) {
     res.statusCode = 400;
     res.end(JSON.stringify(error));
