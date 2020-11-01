@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { parseCookies } from "nookies";
 
 const links = [
   // { href: 'https://github.com/vercel/next.js', label: 'GitHub' },
@@ -6,6 +8,15 @@ const links = [
 ];
 
 export default function Nav({ title }) {
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const cookies = parseCookies(document.cookie);
+    if (cookies && cookies.username) {
+      setUsername(cookies.username);
+    }
+  });
+
   return (
     <nav>
       <ul className="flex justify-between items-center p-8">
@@ -23,6 +34,13 @@ export default function Nav({ title }) {
               </a>
             </li>
           ))}
+          {!!username && (
+            <li key={username}>
+              <a href={`/dashboard`} className="btn-blue no-underline">
+                {username}
+              </a>
+            </li>
+          )}
         </ul>
       </ul>
     </nav>

@@ -1,7 +1,18 @@
 import Nav from "../components/nav";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { parseCookies } from "nookies";
 
 export default function IndexPage() {
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const cookies = parseCookies(document.cookie);
+    if (cookies && cookies.username) {
+      setUsername(cookies.username);
+    }
+  });
+
   return (
     <div>
       <Nav />
@@ -13,11 +24,19 @@ export default function IndexPage() {
           Un site pour trouver des gens avec qui jouer.
         </h3>
         <div className="justify-center pt-4 flex">
-          <Link href="/games/new">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center">
-              C'est parti !
-            </button>
-          </Link>
+          {!!username ? (
+            <Link href="/dashboard">
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center">
+                Ma dashboard
+              </button>
+            </Link>
+          ) : (
+            <Link href="/users/new">
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center">
+                C'est parti !
+              </button>
+            </Link>
+          )}
         </div>
       </div>
       <div className="container p-20">
@@ -43,7 +62,7 @@ export default function IndexPage() {
               </li>
               <li>
                 Choisir des jeux via la rechercher IGDB et les stocker dans
-                8base s'ils n'existent pas
+                postgres s'ils n'existent pas
               </li>
               <li>Choisir des crénaux de disponibilité via un calendrier</li>
             </ul>

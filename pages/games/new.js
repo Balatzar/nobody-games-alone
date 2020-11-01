@@ -55,7 +55,7 @@ export default function GamesNew() {
       <div className="p-20 bg-gray-200 h-screen overflow-scroll pb-30">
         <h3 className="text-center text-2xl">Sélectionner des jeux</h3>
         <form onSubmit={searchGame}>
-          <label htmlFor="q">Nom</label>
+          <label>Nom</label>
           <input
             type="text"
             name="q"

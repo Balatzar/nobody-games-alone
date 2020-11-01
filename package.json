@@ -11,6 +11,7 @@
     "@8base/api-client": "^1.4.0",
     "moment": "^2.29.1",
     "next": "latest",
+    "nookies": "^2.5.0",
     "pg": "^8.4.2",
     "react": "^16.13.1",
     "react-big-calendar": "^0.28.1",
