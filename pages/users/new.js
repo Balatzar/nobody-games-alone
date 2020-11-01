@@ -19,7 +19,7 @@ export default function UserNew() {
     const res = await fetch(`/api/users`, query);
     const data = await res.json();
     const { temp_token, username: savedusername } = data[0];
-    setCookie(null, "temp-token", temp_token, {
+    setCookie(null, "temp_token", temp_token, {
       maxAge: 10 * 365 * 24 * 60 * 60, // 10 years
       path: "/",
       sameSite: "strict",

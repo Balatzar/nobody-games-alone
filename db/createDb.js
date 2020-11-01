@@ -26,6 +26,18 @@ const db = require("../db");
     );
     CREATE INDEX idx_user_temp_token
     ON users(temp_token);
+
+    DROP TABLE IF EXISTS games_users;
+    CREATE TABLE games_users (
+      game_id INT,
+      user_id INT,
+      CONSTRAINT fk_game
+        FOREIGN KEY(game_id)
+          REFERENCES games(id),
+      CONSTRAINT fk_user
+        FOREIGN KEY(user_id)
+          REFERENCES users(id)
+    );
   `);
   console.log(res);
 
