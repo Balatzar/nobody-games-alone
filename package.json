@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "createDb": "node ./db/createDb.js"
   },
   "dependencies": {
     "@8base/api-client": "^1.4.0",

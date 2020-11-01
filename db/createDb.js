@@ -10,4 +10,6 @@ const db = require("../db");
     );
   `);
   console.log(res);
+
+  process.exit();
 })();
