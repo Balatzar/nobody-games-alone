@@ -1,0 +1,90 @@
+import Nav from "../components/nav";
+import Link from "next/link";
+
+export default function IndexPage() {
+  return (
+    <div>
+      <Nav />
+      <div className="py-20 bg-gray-200">
+        <h1 className="text-5xl text-center text-accent-1">
+          Nobody Games Alone
+        </h1>
+        <h3 className="text-center text-2xl">
+          Un site pour trouver des gens avec qui jouer.
+        </h3>
+        <div className="justify-center pt-4 flex">
+          <Link href="/games/new">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center">
+              C'est parti !
+            </button>
+          </Link>
+        </div>
+      </div>
+      <div className="container p-20">
+        <h4 className="text-center underline">
+          Ce qui doit etre mis en place :
+        </h4>
+        <ul className="list-disc pl-6">
+          <li>
+            <b>Index</b>
+            <ul className="list-decimal pl-6">
+              <li>Présenter qui joue a quel jeu</li>
+              <li>Faire un gros bouton CTA</li>
+              <li>Expliquer le concept du site</li>
+            </ul>
+          </li>
+          <li>
+            <b>Wizard création de compte</b>
+            <ul className="list-decimal pl-6">
+              <li>Créer un compte via le systeme de 8base</li>
+              <li>
+                Choisir des jeux via la rechercher IGDB et les stocker dans
+                8base s'ils n'existent pas
+              </li>
+              <li>Choisir des crénaux de disponibilité via un calendrier</li>
+            </ul>
+          </li>
+          <li>
+            <b>Dashboard utilisateur</b>
+            <ul className="list-decimal pl-6">
+              <li>Présenter mes jeux avec bouton pour en rajouter</li>
+              <li>Présenter mes crénaux avec option pour en rajouter</li>
+              <li>
+                Afficher des propositions sur mes jeux et mes crénaux en
+                fonction des autres utilisateurs
+              </li>
+            </ul>
+          </li>
+          <li>
+            <b>Page jeu</b>
+            <ul className="list-decimal pl-6">
+              <li>
+                Avoir une jolie page jeu publique qui présente les informations
+              </li>
+              <li>Montrer qui y joue et quand</li>
+            </ul>
+          </li>
+          <li>
+            <b>Technique</b>
+            <ul className="list-decimal pl-6">
+              <li>
+                Refactoriser les fetchs pour utiliser SWR et mettre en place de
+                l'error handling et du loading
+              </li>
+            </ul>
+          </li>
+          <li>
+            <b>A venir</b>
+            <ul className="list-decimal pl-6">
+              <li>Créer des crénaux récurents</li>
+              <li>
+                Un import steam selectif (on récupere tous les jeux et
+                l'utilisateur check ceux qu'il ou elle veut importer)
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+}
