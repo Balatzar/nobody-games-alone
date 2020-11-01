@@ -1,5 +1,6 @@
 import Nav from "../components/nav";
 import Link from "next/link";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import { parseCookies } from "nookies";
 
@@ -15,6 +16,9 @@ export default function IndexPage() {
 
   return (
     <div>
+      <Head>
+        <title>Nobody Games Alone</title>
+      </Head>
       <Nav />
       <div className="py-20 bg-gray-200">
         <h1 className="text-5xl text-center text-accent-1">
