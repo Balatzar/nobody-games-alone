@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@8base/api-client": "^1.4.0",
-    "cookie": "^0.4.1",
     "moment": "^2.29.1",
     "next": "latest",
     "nookies": "^2.5.0",

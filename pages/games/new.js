@@ -14,7 +14,6 @@ export default function GamesNew() {
     fetch(`/api/games/search?q=${query}`)
       .then((res) => res.json())
       .then(({ data }) => {
-        console.log(data);
         setGames(data);
         setSelectedGames({});
       });

@@ -3,6 +3,7 @@ const pool = new Pool();
 module.exports = {
   query: (text, params) => {
     console.log(text);
+    console.log(params);
     return pool.query(text, params);
   },
 };

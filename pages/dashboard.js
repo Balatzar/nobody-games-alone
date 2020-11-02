@@ -4,51 +4,82 @@ import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Head from "next/head";
-import * as cookie from "cookie";
 
 const localizer = momentLocalizer(moment);
 
+const prepareTimeslots = (timeslots) => {
+  return timeslots.map(({ start_time, end_time, id }) => ({
+    start: start_time.toString(),
+    end: end_time.toString(),
+    id,
+  }));
+};
+
 export async function getServerSideProps(context) {
-  const parsedCookies = cookie.parse(context.req.headers.cookie);
   const fetchUser = await db.query(
     `
       SELECT * FROM users
-      WHERE temp_token = $1
+      WHERE temp_token = $1;
     `,
-    [parsedCookies.temp_token]
+    [context.req.cookies.temp_token]
   );
   const currentUser = fetchUser.rows[0];
   const fetchGames = await db.query(`
     SELECT games.* FROM games
     INNER JOIN games_users ON games_users.game_id = games.id
     INNER JOIN users ON users.id = games_users.user_id
-    WHERE users.id = ${currentUser.id}
+    WHERE users.id = ${currentUser.id};
   `);
-  const fetchTimeslots = await db.query(
-    "SELECT start_time, end_time, id from timeslots;"
+  const fetchTimeslots = await db.query(`
+    SELECT timeslots.* FROM timeslots
+    INNER JOIN timeslots_users ON timeslots_users.timeslot_id = timeslots.id
+    INNER JOIN users ON users.id = timeslots_users.user_id
+    WHERE users.id = ${currentUser.id};
+  `);
+  let i = 0;
+  const fetchOtherTimeslots = await db.query(
+    `
+    SELECT timeslots.* FROM timeslots
+    WHERE (${fetchTimeslots.rows
+      .map(() => `start_time >= $${++i} AND end_time <= $${++i}`)
+      .join(" OR ")})
+      AND NOT id IN (${fetchTimeslots.rows.map(({ id }) => id).join(",")});
+  `,
+    fetchTimeslots.rows.reduce((acc, { start_time, end_time }) => {
+      acc.push(start_time);
+      acc.push(end_time);
+      return acc;
+    }, [])
   );
-  const timeslots = fetchTimeslots.rows.map(({ start_time, end_time, id }) => ({
-    start: start_time.toString(),
-    end: end_time.toString(),
-    id,
-  }));
   const data = {
     props: {
       games: fetchGames.rows,
-      timeslots,
+      timeslots: prepareTimeslots(fetchTimeslots.rows),
       currentUser,
+      otherTimeslots: prepareTimeslots(fetchOtherTimeslots.rows),
     },
   };
   console.log(data.props);
   return data;
 }
 
-export default function Dashboard({ games, timeslots }) {
-  const events = timeslots.map(({ start, end, id }) => ({
-    start: new Date(start),
-    end: new Date(end),
-    id,
-  }));
+export default function Dashboard({ games, timeslots, otherTimeslots }) {
+  const events = timeslots
+    .map(({ start, end, id }) => ({
+      start: new Date(start),
+      end: new Date(end),
+      id,
+      title: "Mes dispo",
+    }))
+    .concat(
+      otherTimeslots.map(({ start, end, id }) => ({
+        start: new Date(start),
+        end: new Date(end),
+        id,
+        title: "Autres dispo",
+        isMine: true,
+      }))
+    );
   return (
     <>
       <Head>
@@ -70,6 +101,23 @@ export default function Dashboard({ games, timeslots }) {
           events={events}
           defaultView={Views.WEEK}
           defaultDate={new Date()}
+          eventPropGetter={(event, start, end, isSelected) => {
+            let newStyle = {
+              backgroundColor: "lightgrey",
+              color: "black",
+              borderRadius: "0px",
+              border: "none",
+            };
+
+            if (event.isMine) {
+              newStyle.backgroundColor = "lightblue";
+            }
+
+            return {
+              className: "",
+              style: newStyle,
+            };
+          }}
         />
       </div>
     </>
