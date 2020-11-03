@@ -104,6 +104,7 @@ export default function IndexPage() {
           <li>
             <b>Technique</b>
             <ul className="list-decimal pl-6">
+              <li>Completer le CRUD des elements de base</li>
               <li>
                 IMPORTANT Refacto les queries SQL pour utiliser les parametres
               </li>

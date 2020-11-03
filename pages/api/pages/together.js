@@ -20,8 +20,7 @@ const handler = async (req, res) => {
   const fetchTimeslots = await db.query(
     `
     SELECT timeslots.*, users.username FROM timeslots
-    INNER JOIN timeslots_users on timeslots_users.timeslot_id = timeslots.id
-    INNER JOIN users on users.id = timeslots_users.user_id
+    INNER JOIN users on users.id = timeslots.user_id
     `
   );
   const fetchGames = await db.query(

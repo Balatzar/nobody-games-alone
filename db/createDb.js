@@ -10,18 +10,6 @@ const db = require("../db");
     DROP TABLE IF EXISTS timeslots;
     DROP TABLE IF EXISTS users;
 
-    CREATE TABLE games (
-      id SERIAL PRIMARY KEY,
-      name VARCHAR NOT NULL UNIQUE,
-      igdb_id VARCHAR NOT NULL UNIQUE
-    );
-
-    CREATE TABLE timeslots (
-      id SERIAL PRIMARY KEY,
-      start_time TIMESTAMPTZ NOT NULL,
-      end_time TIMESTAMPTZ NOT NULL
-    );
-
     CREATE TABLE users (
       id SERIAL PRIMARY KEY,
       temp_token uuid DEFAULT uuid_generate_v4(),
@@ -29,6 +17,13 @@ const db = require("../db");
     );
     CREATE INDEX idx_user_temp_token
     ON users(temp_token);
+
+    CREATE TABLE games (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR NOT NULL UNIQUE,
+      igdb_id VARCHAR NOT NULL UNIQUE
+    );
+
 
     CREATE TABLE games_users (
       game_id INT,
@@ -40,16 +35,15 @@ const db = require("../db");
         FOREIGN KEY(user_id)
           REFERENCES users(id)
     );
-
-    CREATE TABLE timeslots_users (
-      timeslot_id INT,
+    CREATE TABLE timeslots (
+      id SERIAL PRIMARY KEY,
+      start_time TIMESTAMPTZ NOT NULL,
+      end_time TIMESTAMPTZ NOT NULL,
       user_id INT,
-      CONSTRAINT fk_timeslot
-        FOREIGN KEY(timeslot_id)
-          REFERENCES timeslots(id),
       CONSTRAINT fk_user
         FOREIGN KEY(user_id)
           REFERENCES users(id)
+
     );
   `);
   console.log(res);

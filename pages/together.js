@@ -39,7 +39,7 @@ export default function Together() {
   return (
     <>
       <Head>
-        <title>Let's play together - Nobody Games Alone</title>
+        <title>Jouons ensemble - Nobody Games Alone</title>
       </Head>
       <Nav title={true} />
       <div className="p-20 bg-gray-200 h-screen overflow-scroll pb-30">

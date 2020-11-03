@@ -36,16 +36,13 @@ export async function getServerSideProps(context) {
   `);
   const fetchTimeslots = await db.query(`
     SELECT timeslots.* FROM timeslots
-    INNER JOIN timeslots_users ON timeslots_users.timeslot_id = timeslots.id
-    INNER JOIN users ON users.id = timeslots_users.user_id
-    WHERE users.id = ${currentUser.id};
+    WHERE user_id = ${currentUser.id};
   `);
   let i = 0;
   const fetchOtherTimeslots = await db.query(
     `
     SELECT timeslots.*, users.username FROM timeslots
-    INNER JOIN timeslots_users on timeslots_users.timeslot_id = timeslots.id
-    INNER JOIN users on users.id = timeslots_users.user_id
+    INNER JOIN users on users.id = timeslots.user_id
     WHERE (${fetchTimeslots.rows
       .map(() => `start_time <= $${++i} AND end_time >= $${++i}`)
       .join(" OR ")})
