@@ -44,15 +44,17 @@ export async function getServerSideProps(context) {
     INNER JOIN timeslots_users on timeslots_users.timeslot_id = timeslots.id
     INNER JOIN users on users.id = timeslots_users.user_id
     WHERE (${fetchTimeslots.rows
-      .map(() => `start_time >= $${++i} AND end_time <= $${++i}`)
+      .map(() => `start_time <= $${++i} AND end_time >= $${++i}`)
       .join(" OR ")})
       AND NOT timeslots.id IN (${fetchTimeslots.rows
         .map(({ id }) => id)
         .join(",")});
   `,
     fetchTimeslots.rows.reduce((acc, { start_time, end_time }) => {
-      acc.push(start_time);
+      // Warning: start_time is compared to end_time and vice versa.
+      // https://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
       acc.push(end_time);
+      acc.push(start_time);
       return acc;
     }, [])
   );
