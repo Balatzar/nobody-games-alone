@@ -2,6 +2,7 @@ import Nav from "../../components/nav";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import Link from "next/link";
 
 export default function GamesNew() {
   const [games, setGames] = useState([]);
@@ -14,6 +15,7 @@ export default function GamesNew() {
     fetch(`/api/games/search?q=${query}`)
       .then((res) => res.json())
       .then(({ data }) => {
+        console.log(data);
         setGames(data);
         setSelectedGames({});
       });
@@ -72,6 +74,9 @@ export default function GamesNew() {
             type="submit"
             value="Chercher"
           />
+          <a href="https://airtable.com/shrw0s7oTWD2alWxx" target="_blank">
+            Jeu manquant ?
+          </a>
         </form>
         <form>
           {!!games.length && (
@@ -80,7 +85,7 @@ export default function GamesNew() {
                 {games.map(({ name, id }, i) => {
                   return (
                     <li key={i}>
-                      <label htmlFor="{game}">{name}</label>
+                      <label htmlFor={name}>{name}</label>
                       <input onChange={checkGame} value={id} type="checkbox" />
                     </li>
                   );

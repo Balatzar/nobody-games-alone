@@ -7,7 +7,11 @@ export default async function search(req, res) {
   const query = {
     method: "POST",
     headers,
-    body: `fields name; where name ~ *"${req.query.q}"*; limit 50;`,
+    body: `
+      fields *, platforms.*;
+      where name ~ *"${req.query.q}"* & platforms != null;
+      limit 50;
+    `,
   };
 
   const response = await fetch(url, query);
