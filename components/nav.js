@@ -22,7 +22,7 @@ export default function Nav({ title }) {
       <ul className="flex justify-between items-center p-8">
         <li>
           <Link href="/">
-            <a className="text-blue-500 no-underline">Home</a>
+            <a className="text-blue-500 no-underline">Accueil</a>
           </Link>
         </li>
         {title && <li>Nobody Games Alone</li>}

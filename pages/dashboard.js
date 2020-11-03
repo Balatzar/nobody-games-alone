@@ -18,6 +18,7 @@ const prepareTimeslots = (timeslots) => {
   }));
 };
 
+// Refactor to use an api route and load the page faster, with loading indicator
 export async function getServerSideProps(context) {
   const fetchUser = await db.query(
     `

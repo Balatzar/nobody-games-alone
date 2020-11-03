@@ -42,6 +42,13 @@ export default function IndexPage() {
             </Link>
           )}
         </div>
+        <div className="justify-center pt-4 flex">
+          <Link href="/together">
+            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-center">
+              Explorer
+            </button>
+          </Link>
+        </div>
       </div>
       <div className="container p-20">
         <h4 className="text-center underline">
@@ -54,6 +61,9 @@ export default function IndexPage() {
               <li>Présenter qui joue a quel jeu</li>
               <li>Faire un gros bouton CTA</li>
               <li>Expliquer le concept du site</li>
+              <li>
+                Faire une page qui présente toutes les disponibilités d'un coup
+              </li>
             </ul>
           </li>
           <li>
@@ -106,6 +116,7 @@ export default function IndexPage() {
           <li>
             <b>A venir</b>
             <ul className="list-decimal pl-6">
+              <li>Spécifier les plateformes pour chaque jeu</li>
               <li>Créer des crénaux récurents</li>
               <li>
                 Un import steam selectif (on récupere tous les jeux et
@@ -115,6 +126,11 @@ export default function IndexPage() {
                 Permettre de claim un compte temporaire et créer des comptes
                 classiques
               </li>
+              <li>
+                Mettre en place un systeme d'error reporting sur le serveur et
+                les clients
+              </li>
+              <li>Installer un log sink via vercel</li>
             </ul>
           </li>
         </ul>
