@@ -8,10 +8,11 @@ import Head from "next/head";
 const localizer = momentLocalizer(moment);
 
 const prepareTimeslots = (timeslots) => {
-  return timeslots.map(({ start_time, end_time, id }) => ({
+  return timeslots.map(({ start_time, end_time, id, username }) => ({
     start: start_time.toString(),
     end: end_time.toString(),
     id,
+    username: username || null,
   }));
 };
 
@@ -39,11 +40,15 @@ export async function getServerSideProps(context) {
   let i = 0;
   const fetchOtherTimeslots = await db.query(
     `
-    SELECT timeslots.* FROM timeslots
+    SELECT timeslots.*, users.username FROM timeslots
+    INNER JOIN timeslots_users on timeslots_users.timeslot_id = timeslots.id
+    INNER JOIN users on users.id = timeslots_users.user_id
     WHERE (${fetchTimeslots.rows
       .map(() => `start_time >= $${++i} AND end_time <= $${++i}`)
       .join(" OR ")})
-      AND NOT id IN (${fetchTimeslots.rows.map(({ id }) => id).join(",")});
+      AND NOT timeslots.id IN (${fetchTimeslots.rows
+        .map(({ id }) => id)
+        .join(",")});
   `,
     fetchTimeslots.rows.reduce((acc, { start_time, end_time }) => {
       acc.push(start_time);
@@ -69,14 +74,14 @@ export default function Dashboard({ games, timeslots, otherTimeslots }) {
       start: new Date(start),
       end: new Date(end),
       id,
-      title: "Mes dispo",
+      title: "Moi",
     }))
     .concat(
-      otherTimeslots.map(({ start, end, id }) => ({
+      otherTimeslots.map(({ start, end, id, username }) => ({
         start: new Date(start),
         end: new Date(end),
         id,
-        title: "Autres dispo",
+        title: username,
         isMine: true,
       }))
     );
@@ -101,6 +106,7 @@ export default function Dashboard({ games, timeslots, otherTimeslots }) {
           events={events}
           defaultView={Views.WEEK}
           defaultDate={new Date()}
+          culture="fr"
           eventPropGetter={(event, start, end, isSelected) => {
             let newStyle = {
               backgroundColor: "lightgrey",
