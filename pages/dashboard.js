@@ -7,6 +7,8 @@ import Head from "next/head";
 
 const localizer = momentLocalizer(moment);
 
+const colors = ["#14F74D", "#F5AA90", "#09AEE6", "#CC562F", "#B53105"];
+
 const prepareTimeslots = (timeslots) => {
   return timeslots.map(({ start_time, end_time, id, username }) => ({
     start: start_time.toString(),
@@ -71,6 +73,12 @@ export async function getServerSideProps(context) {
 }
 
 export default function Dashboard({ games, timeslots, otherTimeslots }) {
+  const usernameColors = otherTimeslots.reduce((acc, { username }) => {
+    if (!acc[username]) {
+      acc[username] = colors.shift();
+    }
+    return acc;
+  }, {});
   const events = timeslots
     .map(({ start, end, id }) => ({
       start: new Date(start),
@@ -84,7 +92,7 @@ export default function Dashboard({ games, timeslots, otherTimeslots }) {
         end: new Date(end),
         id,
         title: username,
-        isMine: true,
+        username,
       }))
     );
   return (
@@ -117,8 +125,8 @@ export default function Dashboard({ games, timeslots, otherTimeslots }) {
               border: "none",
             };
 
-            if (event.isMine) {
-              newStyle.backgroundColor = "lightblue";
+            if (event.username) {
+              newStyle.backgroundColor = usernameColors[event.username];
             }
 
             return {
