@@ -42,11 +42,11 @@ const handler = async (req, res) => {
     const gameDbData = gamesResponse.rows;
 
     const platformsData = platformsToCreate
-      .map(({ name, id, abbreviation, category }) => {
+      .map(({ name, id, abbreviation, category, slug }) => {
         return `('${name.replace("'", "''")}', '${id}', '${abbreviation.replace(
           "'",
           "''"
-        )}', ${category})`;
+        )}', ${category}, '${slug}')`;
       })
       .join(",");
     const platformNames = platformsToCreate
@@ -55,7 +55,7 @@ const handler = async (req, res) => {
 
     const platformsQuery = `
       WITH new_platforms AS(
-        INSERT INTO platforms (name, igdb_id, abbreviation, category)
+        INSERT INTO platforms (name, igdb_id, abbreviation, category, slug)
           VALUES
             ${platformsData}
         ON CONFLICT ON CONSTRAINT platforms_name_key DO NOTHING

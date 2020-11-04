@@ -30,6 +30,7 @@ const db = require("../db");
       id SERIAL PRIMARY KEY,
       name VARCHAR NOT NULL UNIQUE,
       igdb_id VARCHAR NOT NULL UNIQUE,
+      slug VARCHAR NOT NULL UNIQUE,
       abbreviation VARCHAR,
       category INT
     );

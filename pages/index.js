@@ -6,13 +6,23 @@ import { parseCookies } from "nookies";
 
 export default function IndexPage() {
   const [username, setUsername] = useState("");
+  const [platforms, setPlatforms] = useState([]);
 
   useEffect(() => {
     const cookies = parseCookies(document.cookie);
     if (cookies && cookies.username) {
       setUsername(cookies.username);
     }
-  });
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch(`/api/pages/landing`);
+      const { platforms } = await res.json();
+      setPlatforms(platforms);
+    };
+    fetchData();
+  }, []);
 
   return (
     <div>
@@ -49,6 +59,35 @@ export default function IndexPage() {
             </button>
           </Link>
         </div>
+      </div>
+      <div className="p-5 flex flex-wrap space-x-4">
+        {platforms.map((platform) => {
+          return (
+            <div
+              className="max-w-sm rounded overflow-hidden shadow-lg"
+              style={{
+                width: "300px",
+              }}
+            >
+              <div className="px-6 py-4">
+                <Link href={`/platforms/${platform.slug}`}>
+                  <div className="font-bold text-xl mb-2 text-center underline cursor-pointer">
+                    {platform.name}
+                  </div>
+                </Link>
+              </div>
+              <div className="px-6 pt-4 pb-2">
+                {platform.games.split("||").map((game) => {
+                  return (
+                    <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 text-center">
+                      {game}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
       </div>
       <div className="container p-20">
         <h4 className="text-center underline">
