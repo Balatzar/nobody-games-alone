@@ -6,9 +6,11 @@ const db = require("../db");
 
     DROP TABLE IF EXISTS games_users;
     DROP TABLE IF EXISTS timeslots_users;
+    DROP TABLE IF EXISTS games_users_platforms;
     DROP TABLE IF EXISTS games;
     DROP TABLE IF EXISTS timeslots;
     DROP TABLE IF EXISTS users;
+    DROP TABLE IF EXISTS platforms;
 
     CREATE TABLE users (
       id SERIAL PRIMARY KEY,
@@ -24,6 +26,13 @@ const db = require("../db");
       igdb_id VARCHAR NOT NULL UNIQUE
     );
 
+    CREATE TABLE platforms (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR NOT NULL UNIQUE,
+      igdb_id VARCHAR NOT NULL UNIQUE,
+      abbreviation VARCHAR,
+      category INT
+    );
 
     CREATE TABLE games_users (
       game_id INT,
@@ -35,6 +44,22 @@ const db = require("../db");
         FOREIGN KEY(user_id)
           REFERENCES users(id)
     );
+
+    CREATE TABLE games_users_platforms (
+      game_id INT,
+      user_id INT,
+      platform_id INT,
+      CONSTRAINT fk_game
+        FOREIGN KEY(game_id)
+          REFERENCES games(id),
+      CONSTRAINT fk_user
+        FOREIGN KEY(user_id)
+          REFERENCES users(id),
+      CONSTRAINT fk_platform
+        FOREIGN KEY(platform_id)
+          REFERENCES platforms(id)
+    );
+
     CREATE TABLE timeslots (
       id SERIAL PRIMARY KEY,
       start_time TIMESTAMPTZ NOT NULL,
@@ -43,7 +68,6 @@ const db = require("../db");
       CONSTRAINT fk_user
         FOREIGN KEY(user_id)
           REFERENCES users(id)
-
     );
   `);
   console.log(res);

@@ -109,6 +109,10 @@ export default function IndexPage() {
                 IMPORTANT Refacto les queries SQL pour utiliser les parametres
               </li>
               <li>
+                Refacto la dashboard for etre une page statique et pour pouvoir
+                marcher sans données
+              </li>
+              <li>
                 Refactoriser les fetchs pour utiliser SWR et mettre en place de
                 l'error handling et du loading
               </li>

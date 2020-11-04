@@ -1,20 +1,5 @@
 const db = require("../../../db");
-
-const mergeObjects = (objects, key) => {
-  return Object.values(
-    objects.reduce((acc, object) => {
-      if (acc[object.id]) {
-        acc[object.id][key].push(object[key]);
-      } else {
-        acc[object.id] = {
-          ...object,
-          [key]: [object[key]],
-        };
-      }
-      return acc;
-    }, {})
-  );
-};
+import { mergeObjects } from "../../../utils/helpers";
 
 const handler = async (req, res) => {
   const fetchTimeslots = await db.query(
@@ -25,9 +10,9 @@ const handler = async (req, res) => {
   );
   const fetchGames = await db.query(
     `
-    SELECT games.*, users.username as usernames FROM games
-    INNER JOIN games_users on games_users.game_id = games.id
-    INNER JOIN users on users.id = games_users.user_id
+    SELECT DISTINCT games.*, users.username as usernames FROM games
+    INNER JOIN games_users_platforms ON games_users_platforms.game_id = games.id
+    INNER JOIN users ON users.id = games_users_platforms.user_id
     `
   );
 

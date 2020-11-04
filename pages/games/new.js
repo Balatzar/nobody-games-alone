@@ -2,43 +2,90 @@ import Nav from "../../components/nav";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import Link from "next/link";
 
 export default function GamesNew() {
   const [games, setGames] = useState([]);
   const [query, setQuery] = useState("");
-  const [selectedGames, setSelectedGames] = useState({});
+  const [selectedGames, setSelectedGames] = useState([]);
   const router = useRouter();
 
-  const searchGame = (event) => {
+  const searchGame = async (event) => {
     event.preventDefault();
-    fetch(`/api/games/search?q=${query}`)
-      .then((res) => res.json())
-      .then(({ data }) => {
-        console.log(data);
-        setGames(data);
-        setSelectedGames({});
-      });
+    const res = await fetch(`/api/games/search?q=${query}`);
+    const { data } = await res.json();
+    console.log(data);
+    setGames(data);
+    setSelectedGames([]);
   };
 
-  const checkGame = (event) => {
+  const checkGame = (event, game) => {
     const { checked, value } = event.target;
+    const platformId = parseInt(value, 10);
+    const findGame = ({ gameId }) => gameId === game.id;
+    const currentSelectedGame = selectedGames.find(findGame);
+    const currentSelectedGameIndex = selectedGames.findIndex(findGame);
+
     if (checked) {
-      setSelectedGames({
-        ...selectedGames,
-        [value]: games.find((game) => game.id == value),
-      });
+      // This is hell
+      // Lots of code to make code immutable, look into immutable-js
+      // Or move this code to a reducer
+      if (currentSelectedGame) {
+        setSelectedGames([
+          ...selectedGames.slice(0, currentSelectedGameIndex),
+          {
+            ...currentSelectedGame,
+            platforms: [...currentSelectedGame.platforms, platformId],
+          },
+          ...selectedGames.slice(currentSelectedGameIndex + 1),
+        ]);
+      } else {
+        setSelectedGames([
+          ...selectedGames,
+          { gameId: game.id, platforms: [platformId] },
+        ]);
+      }
     } else {
-      const { [value]: removed, ...remainingMovies } = selectedGames;
-      // https://stackoverflow.com/questions/34401098/remove-a-property-in-an-object-immutably
-      setSelectedGames(remainingMovies);
+      if (currentSelectedGame.platforms.length === 1) {
+        setSelectedGames([
+          ...selectedGames.slice(0, currentSelectedGameIndex),
+          ...selectedGames.slice(currentSelectedGameIndex + 1),
+        ]);
+      } else {
+        const currentPlatformIndex = currentSelectedGame.platforms.findIndex(
+          (id) => id === platformId
+        );
+        setSelectedGames([
+          ...selectedGames.slice(0, currentSelectedGameIndex),
+          {
+            ...currentSelectedGame,
+            platforms: [
+              ...currentSelectedGame.platforms.slice(0, currentPlatformIndex),
+              ...currentSelectedGame.platforms.slice(currentPlatformIndex + 1),
+            ],
+          },
+          ...selectedGames.slice(currentSelectedGameIndex + 1),
+        ]);
+      }
     }
   };
 
   const submitGames = () => {
+    const selectedGameIds = selectedGames.map(({ gameId }) => gameId);
+
     const query = {
       method: "POST",
-      body: JSON.stringify(Object.values(selectedGames)),
+      body: JSON.stringify({
+        games: games
+          .filter(({ id }) => selectedGameIds.includes(id))
+          .map((game) => ({
+            ...game,
+            platforms: game.platforms.filter(({ id }) =>
+              selectedGames
+                .find(({ gameId }) => gameId === game.id)
+                .platforms.includes(id)
+            ),
+          })),
+      }),
     };
 
     fetch(`/api/games`, query).then((res) => {
@@ -81,12 +128,28 @@ export default function GamesNew() {
         <form>
           {!!games.length && (
             <div>
-              <ul>
-                {games.map(({ name, id }, i) => {
+              <ul className="list-disc">
+                {games.map((game) => {
                   return (
-                    <li key={i}>
-                      <label htmlFor={name}>{name}</label>
-                      <input onChange={checkGame} value={id} type="checkbox" />
+                    <li key={game.id}>
+                      <p htmlFor={game.name}>{game.name}</p>
+                      <ul className="pl-6">
+                        {game.platforms.map((platform) => {
+                          return (
+                            <li key={`${game.id}-${platform.id}`}>
+                              <label>
+                                <input
+                                  onChange={(e) => checkGame(e, game)}
+                                  value={platform.id}
+                                  type="checkbox"
+                                  checked={platform.selected}
+                                />{" "}
+                                {platform.abbreviation}
+                              </label>
+                            </li>
+                          );
+                        })}
+                      </ul>
                     </li>
                   );
                 })}
@@ -98,10 +161,9 @@ export default function GamesNew() {
       <footer className="bg-white justify-center p-4 flex fixed w-full bottom-0 h-32">
         <button
           type="button"
-          disabled={!Object.keys(selectedGames).length}
-          className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center absolute ${!Object.keys(
-            selectedGames
-          ).length && "opacity-50 cursor-not-allowed"}`}
+          disabled={!selectedGames.length}
+          className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center absolute ${!selectedGames.length &&
+            "opacity-50 cursor-not-allowed"}`}
           onClick={submitGames}
         >
           Jeux sélectionnés

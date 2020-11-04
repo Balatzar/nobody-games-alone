@@ -4,6 +4,7 @@ import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Head from "next/head";
+import { mergeObjects } from "../utils/helpers";
 
 const localizer = momentLocalizer(moment);
 
@@ -29,9 +30,10 @@ export async function getServerSideProps(context) {
   );
   const currentUser = fetchUser.rows[0];
   const fetchGames = await db.query(`
-    SELECT games.* FROM games
-    INNER JOIN games_users ON games_users.game_id = games.id
-    INNER JOIN users ON users.id = games_users.user_id
+    SELECT DISTINCT games.*, platforms.abbreviation as platforms FROM games
+    INNER JOIN games_users_platforms ON games_users_platforms.game_id = games.id
+    INNER JOIN users ON users.id = games_users_platforms.user_id
+    INNER JOIN platforms ON platforms.id = games_users_platforms.platform_id
     WHERE users.id = ${currentUser.id};
   `);
   const fetchTimeslots = await db.query(`
@@ -60,7 +62,7 @@ export async function getServerSideProps(context) {
   );
   const data = {
     props: {
-      games: fetchGames.rows,
+      games: mergeObjects(fetchGames.rows, "platforms"),
       timeslots: prepareTimeslots(fetchTimeslots.rows),
       currentUser,
       otherTimeslots: prepareTimeslots(fetchOtherTimeslots.rows),
@@ -103,8 +105,12 @@ export default function Dashboard({ games, timeslots, otherTimeslots }) {
         <h3 className="text-center text-2xl">Ma dashboard</h3>
         <h4 className="underline">Mes jeux</h4>
         <ul>
-          {games.map(({ name, id }) => {
-            return <li key={id}>{name}</li>;
+          {games.map(({ name, id, platforms }) => {
+            return (
+              <li key={id}>
+                {name} ({platforms.join(", ")})
+              </li>
+            );
           })}
         </ul>
         <h4 className="underline">Mes disponibilités</h4>
