@@ -34,17 +34,6 @@ const db = require("../db");
       category INT
     );
 
-    CREATE TABLE games_users (
-      game_id INT,
-      user_id INT,
-      CONSTRAINT fk_game
-        FOREIGN KEY(game_id)
-          REFERENCES games(id),
-      CONSTRAINT fk_user
-        FOREIGN KEY(user_id)
-          REFERENCES users(id)
-    );
-
     CREATE TABLE games_users_platforms (
       game_id INT,
       user_id INT,
@@ -69,6 +58,35 @@ const db = require("../db");
         FOREIGN KEY(user_id)
           REFERENCES users(id)
     );
+
+
+    INSERT INTO users (username)
+      VALUES ('Balthazar'), ('Jean-Balthazar');
+    
+    INSERT INTO games (name, igdb_id)
+      VALUES
+      ('The Witcher: Monster Slayer', '137125'),
+      ('The Witcher 3: Wild Hunt', '1942'),
+      ('Sid Meier''s Civilization: Beyond Earth', '6038');
+    
+    INSERT INTO platforms (name, igdb_id, abbreviation, category, slug)
+      VALUES
+      ('Xbox One', '49', 'xboxone', 1, 'XONE'),
+      ('PC (Microsoft Windows)', '6', 'win', 4, 'PC'),
+      ('Linux', '3', 'linux', 4, 'Linux'),
+      ('iOS', '39', 'ios', 4, 'iOS');
+    
+    INSERT INTO games_users_platforms (game_id, user_id, platform_id)
+      VALUES
+      (1, 1, 4),
+      (2, 1, 1),
+      (3, 2, 2),
+      (3, 2, 3);
+    
+    INSERT INTO timeslots (start_time, end_time, user_id)
+      VALUES
+      ('2020-11-03 02:30:00+01', '2020-11-03 07:30:00+01', 1),
+      ('2020-11-03 02:30:00+01', '2020-11-03 05:30:00+01', 2);
   `);
   console.log(res);
 
