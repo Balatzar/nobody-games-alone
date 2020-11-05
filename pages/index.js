@@ -9,7 +9,7 @@ export default function IndexPage() {
     console.warn(error);
   }
 
-  const platforms = data ? data.platforms : []
+  const platforms = data ? data.platforms : [];
 
   return (
     <div>
