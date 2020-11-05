@@ -8,7 +8,6 @@
     "createDb": "node ./db/createDb.js"
   },
   "dependencies": {
-    "@8base/api-client": "^1.4.0",
     "moment": "^2.29.1",
     "next": "latest",
     "nookies": "^2.5.0",
