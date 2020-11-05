@@ -13,6 +13,7 @@ let id = 0;
 
 export default function TimeslotsNew() {
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(false)
   const router = useRouter();
 
   const clickEvent = (event) => {
@@ -25,20 +26,21 @@ export default function TimeslotsNew() {
     }
   };
 
-  const submitEvents = () => {
+  const submitEvents = async () => {
+    setLoading(true)
     const query = {
       method: "POST",
       body: JSON.stringify(events),
     };
 
-    fetch(`/api/timeslots`, query).then((res) => {
-      if (res.status === 200) {
-        console.log(res);
-        router.push("/dashboard");
-      } else {
-        res.json().then((error) => console.warn(error));
-      }
-    });
+    const res = await fetch(`/api/timeslots`, query)
+    if (res.status === 200) {
+      router.push("/dashboard");
+    } else {
+      setLoading(false)
+      const error = await res.json()
+      console.warn(error)
+    }
   };
 
   return (
@@ -66,7 +68,7 @@ export default function TimeslotsNew() {
       </div>
 
       <footer className="bg-white justify-center p-4 flex fixed w-full bottom-0 h-32">
-        <button
+        {loading ? (<span>Chargement...</span>) : (<button
           type="button"
           disabled={!events.length}
           className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center absolute ${!events.length &&
@@ -74,7 +76,7 @@ export default function TimeslotsNew() {
           onClick={submitEvents}
         >
           Disponibilités sélectionnés
-        </button>
+        </button>)}
       </footer>
     </>
   );

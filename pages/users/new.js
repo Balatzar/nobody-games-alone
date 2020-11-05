@@ -6,10 +6,13 @@ import Head from "next/head";
 
 export default function UserNew() {
   const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   async function submitUser(event) {
     event.preventDefault();
+    if (!username) return;
+    setLoading(true);
 
     const query = {
       method: "POST",
@@ -43,14 +46,25 @@ export default function UserNew() {
         <h3 className="text-center text-2xl">Choisissez un pseudonyme</h3>
         <form onSubmit={submitUser}>
           <label>Pseudonyme</label>
-          <input
-            type="text"
-            name="username"
-            value={username}
-            onChange={(event) => {
-              setUsername(event.target.value);
-            }}
-          />
+          {loading ? (
+            <p>Chargement...</p>
+          ) : (
+            <>
+              <input
+                type="text"
+                name="username"
+                value={username}
+                onChange={(event) => {
+                  setUsername(event.target.value);
+                }}
+              />
+              <input
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-1 px-2 rounded text-center border-l-8"
+                type="submit"
+                value="Créer"
+              />
+            </>
+          )}
         </form>
       </div>
     </>

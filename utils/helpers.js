@@ -14,4 +14,6 @@ const mergeObjects = (objects, key) => {
   );
 };
 
-export { mergeObjects };
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
+export { mergeObjects, fetcher };

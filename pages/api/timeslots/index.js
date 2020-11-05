@@ -18,12 +18,10 @@ const handler = async (req, res) => {
   try {
     const createTimeslots = await db.query(query);
 
-    res.statusCode = 200;
-    res.end(JSON.stringify(createTimeslots.rows));
+    res.status(200).json(createTimeslots.rows)
   } catch (error) {
     console.warn(error);
-    res.statusCode = 400;
-    res.end(JSON.stringify(error));
+    res.status(400).json(error)
   }
 };
 

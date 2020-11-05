@@ -8,7 +8,7 @@ const handler = async (req, res) => {
     GROUP BY platforms.id;
   `);
 
-  res.status(200).json({ platforms: fetchPlatforms.rows });
+  res.status(200).json(fetchPlatforms.rows);
 };
 
 export default handler;

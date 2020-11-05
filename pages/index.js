@@ -3,10 +3,11 @@ import Link from "next/link";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { parseCookies } from "nookies";
+import useSWR from "swr";
+import { fetcher } from "../utils/helpers";
 
 export default function IndexPage() {
   const [username, setUsername] = useState("");
-  const [platforms, setPlatforms] = useState([]);
 
   useEffect(() => {
     const cookies = parseCookies(document.cookie);
@@ -15,14 +16,10 @@ export default function IndexPage() {
     }
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch(`/api/pages/landing`);
-      const { platforms } = await res.json();
-      setPlatforms(platforms);
-    };
-    fetchData();
-  }, []);
+  const { data: platforms, error } = useSWR(`/api/pages/landing`, fetcher);
+  if (error) {
+    console.warn(error);
+  }
 
   return (
     <div>
@@ -61,33 +58,51 @@ export default function IndexPage() {
         </div>
       </div>
       <div className="p-5 flex flex-wrap space-x-4">
-        {platforms.map((platform) => {
-          return (
-            <div
-              className="max-w-sm rounded overflow-hidden shadow-lg"
-              style={{
-                width: "300px",
-              }}
-            >
-              <div className="px-6 py-4">
-                <Link href={`/platforms/${platform.slug}`}>
-                  <div className="font-bold text-xl mb-2 text-center underline cursor-pointer">
-                    {platform.name}
-                  </div>
-                </Link>
+        {platforms ? (
+          platforms.map((platform) => {
+            return (
+              <div
+                key={platform.id}
+                className="max-w-sm rounded overflow-hidden shadow-lg"
+                style={{
+                  width: "300px",
+                }}
+              >
+                <div className="px-6 py-4">
+                  <Link href={`/platforms/${platform.slug}`}>
+                    <div className="font-bold text-xl mb-2 text-center underline cursor-pointer">
+                      {platform.name}
+                    </div>
+                  </Link>
+                </div>
+                <div className="px-6 pt-4 pb-2">
+                  {platform.games
+                    .split("||")
+                    .slice(0, 3)
+                    .map((game) => {
+                      return (
+                        <span
+                          key={game}
+                          className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 text-center"
+                        >
+                          {game}
+                        </span>
+                      );
+                    })}
+                  {platform.games.split("||").length > 3 && (
+                    <Link href={`/platforms/${platform.slug}`}>
+                      <div className="text-center underline cursor-pointer">
+                        Plus de jeux
+                      </div>
+                    </Link>
+                  )}
+                </div>
               </div>
-              <div className="px-6 pt-4 pb-2">
-                {platform.games.split("||").map((game) => {
-                  return (
-                    <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 text-center">
-                      {game}
-                    </span>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
+            );
+          })
+        ) : (
+          <p>Chargement...</p>
+        )}
       </div>
       <div className="container p-20">
         <h4 className="text-center underline">
@@ -143,7 +158,11 @@ export default function IndexPage() {
           <li>
             <b>Technique</b>
             <ul className="list-decimal pl-6">
-              <li>Completer le CRUD des elements de base</li>
+              <li>
+                PRIO Améliorer la vue games/new pour pouvoir ajouter plusieurs
+                jeux a la suite via plusieurs recherches
+              </li>
+              <li>PRIO Completer le CRUD des elements de base</li>
               <li>
                 IMPORTANT Refacto les queries SQL pour utiliser les parametres
               </li>
@@ -152,15 +171,19 @@ export default function IndexPage() {
                 marcher sans données
               </li>
               <li>
-                Refactoriser les fetchs pour utiliser SWR et mettre en place de
-                l'error handling et du loading
+                PRIO Refactoriser les fetchs pour utiliser SWR et mettre en
+                place de l'error handling et du loading
+              </li>
+              <li>
+                Faire une footer avec des liens vers des pages platforms et
+                games rassemblant toutes les données (SEO)
               </li>
             </ul>
           </li>
           <li>
             <b>A venir</b>
             <ul className="list-decimal pl-6">
-              <li>Spécifier les plateformes pour chaque jeu</li>
+              <li>FAIT Spécifier les plateformes pour chaque jeu</li>
               <li>Créer des crénaux récurents</li>
               <li>
                 Un import steam selectif (on récupere tous les jeux et

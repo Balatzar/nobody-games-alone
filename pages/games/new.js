@@ -7,15 +7,19 @@ export default function GamesNew() {
   const [games, setGames] = useState([]);
   const [query, setQuery] = useState("");
   const [selectedGames, setSelectedGames] = useState([]);
+  const [loadingSearch, setLoadingSearch] = useState(false);
+  const [loadingCreate, setLoadingCreate] = useState(false);
   const router = useRouter();
 
   const searchGame = async (event) => {
     event.preventDefault();
+    setLoadingSearch(true);
     const res = await fetch(`/api/games/search?q=${query}`);
     const { data } = await res.json();
     console.log(data);
     setGames(data);
     setSelectedGames([]);
+    setLoadingSearch(false);
   };
 
   const checkGame = (event, game) => {
@@ -69,7 +73,8 @@ export default function GamesNew() {
     }
   };
 
-  const submitGames = () => {
+  const submitGames = async () => {
+    setLoadingCreate(true);
     const selectedGameIds = selectedGames.map(({ gameId }) => gameId);
 
     const query = {
@@ -88,13 +93,14 @@ export default function GamesNew() {
       }),
     };
 
-    fetch(`/api/games`, query).then((res) => {
-      if (res.status === 200) {
-        router.push("/timeslots/new");
-      } else {
-        res.json().then((error) => console.warn(error));
-      }
-    });
+    const res = await fetch(`/api/games`, query);
+    setLoadingSearch(false);
+    if (res.status === 200) {
+      router.push("/timeslots/new");
+    } else {
+      const error = res.json();
+      console.warn(error);
+    }
   };
 
   return (
@@ -108,19 +114,25 @@ export default function GamesNew() {
         <h3 className="text-center text-2xl">Sélectionner des jeux</h3>
         <form onSubmit={searchGame}>
           <label>Nom : </label>
-          <input
-            type="text"
-            name="q"
-            value={query}
-            onChange={(event) => {
-              setQuery(event.target.value);
-            }}
-          />
-          <input
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-1 px-2 rounded text-center border-l-8"
-            type="submit"
-            value="Chercher"
-          />
+          {loadingSearch ? (
+            <span>Chargement...</span>
+          ) : (
+            <>
+              <input
+                type="text"
+                name="q"
+                value={query}
+                onChange={(event) => {
+                  setQuery(event.target.value);
+                }}
+              />
+              <input
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-1 px-2 rounded text-center border-l-8"
+                type="submit"
+                value="Chercher"
+              />
+            </>
+          )}
           <a href="https://airtable.com/shrw0s7oTWD2alWxx" target="_blank">
             Jeu manquant ?
           </a>
@@ -159,15 +171,19 @@ export default function GamesNew() {
         </form>
       </div>
       <footer className="bg-white justify-center p-4 flex fixed w-full bottom-0 h-32">
-        <button
-          type="button"
-          disabled={!selectedGames.length}
-          className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center absolute ${!selectedGames.length &&
-            "opacity-50 cursor-not-allowed"}`}
-          onClick={submitGames}
-        >
-          Jeux sélectionnés
-        </button>
+        {loadingCreate ? (
+          <span>Chargement...</span>
+        ) : (
+          <button
+            type="button"
+            disabled={!selectedGames.length}
+            className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center absolute ${!selectedGames.length &&
+              "opacity-50 cursor-not-allowed"}`}
+            onClick={submitGames}
+          >
+            Jeux sélectionnés
+          </button>
+        )}
       </footer>
     </>
   );
