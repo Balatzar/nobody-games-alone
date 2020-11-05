@@ -4,7 +4,6 @@ const db = require("../db");
   const res = await db.query(`
     CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-    DROP TABLE IF EXISTS games_users;
     DROP TABLE IF EXISTS games_users_platforms;
     DROP TABLE IF EXISTS games;
     DROP TABLE IF EXISTS timeslots;

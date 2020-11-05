@@ -161,8 +161,8 @@ export default function IndexPage() {
                 marcher sans données
               </li>
               <li>
-                PRIO Refactoriser les fetchs pour utiliser SWR et mettre en
-                place de l'error handling et du loading
+                FAIT - PRIO Refactoriser les fetchs pour utiliser SWR et mettre
+                en place de l'error handling et du loading
               </li>
               <li>
                 Faire une footer avec des liens vers des pages platforms et
@@ -173,7 +173,7 @@ export default function IndexPage() {
           <li>
             <b>A venir</b>
             <ul className="list-decimal pl-6">
-              <li>FAIT Spécifier les plateformes pour chaque jeu</li>
+              <li>FAIT - Spécifier les plateformes pour chaque jeu</li>
               <li>Créer des crénaux récurents</li>
               <li>
                 Un import steam selectif (on récupere tous les jeux et

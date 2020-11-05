@@ -13,12 +13,13 @@ export default function GamesNew() {
 
   const searchGame = async (event) => {
     event.preventDefault();
+    if (!query) return;
+
     setLoadingSearch(true);
     const res = await fetch(`/api/games/search?q=${query}`);
     const { data } = await res.json();
-    console.log(data);
-    setGames(data);
-    setSelectedGames([]);
+    const gameIds = selectedGames.map(({ gameId }) => gameId);
+    setGames([...games.filter(({ id }) => gameIds.includes(id)), ...data]);
     setLoadingSearch(false);
   };
 
