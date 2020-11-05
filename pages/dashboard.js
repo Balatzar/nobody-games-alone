@@ -4,7 +4,6 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Head from "next/head";
 import useSWR from "swr";
-import { fetcher } from "../utils/helpers";
 
 const localizer = momentLocalizer(moment);
 
@@ -20,7 +19,7 @@ const prepareTimeslots = (timeslots) => {
 };
 
 export default function Dashboard() {
-  const { data, error } = useSWR(`/api/pages/dashboard`, fetcher);
+  const { data, error } = useSWR(`/api/pages/dashboard`);
   if (error) {
     console.warn(error);
   }

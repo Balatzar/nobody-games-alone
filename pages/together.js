@@ -4,14 +4,13 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Head from "next/head";
 import useSWR from "swr";
-import { fetcher } from "../utils/helpers";
 
 const localizer = momentLocalizer(moment);
 
 const colors = ["#14F74D", "#F5AA90", "#09AEE6", "#CC562F", "#B53105"];
 
 export default function Together() {
-  const { data, error } = useSWR(`/api/pages/together`, fetcher);
+  const { data, error } = useSWR(`/api/pages/together`);
   if (error) {
     console.warn(error);
   }

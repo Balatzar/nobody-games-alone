@@ -1,25 +1,15 @@
 import Nav from "../components/nav";
 import Link from "next/link";
 import Head from "next/head";
-import { useEffect, useState } from "react";
-import { parseCookies } from "nookies";
 import useSWR from "swr";
-import { fetcher } from "../utils/helpers";
 
 export default function IndexPage() {
-  const [username, setUsername] = useState("");
-
-  useEffect(() => {
-    const cookies = parseCookies(document.cookie);
-    if (cookies && cookies.username) {
-      setUsername(cookies.username);
-    }
-  }, []);
-
-  const { data: platforms, error } = useSWR(`/api/pages/landing`, fetcher);
+  const { data, error } = useSWR(`/api/pages/landing`);
   if (error) {
     console.warn(error);
   }
+
+  const platforms = data ? data.platforms : []
 
   return (
     <div>
@@ -35,7 +25,7 @@ export default function IndexPage() {
           Un site pour trouver des gens avec qui jouer.
         </h3>
         <div className="justify-center pt-4 flex">
-          {!!username ? (
+          {data && data.currentUser && data.currentUser.username ? (
             <Link href="/dashboard">
               <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center">
                 Ma dashboard
