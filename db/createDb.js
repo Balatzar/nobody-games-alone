@@ -70,10 +70,10 @@ const db = require("../db");
     
     INSERT INTO platforms (name, igdb_id, abbreviation, category, slug)
       VALUES
-      ('Xbox One', '49', 'xboxone', 1, 'XONE'),
-      ('PC (Microsoft Windows)', '6', 'win', 4, 'PC'),
-      ('Linux', '3', 'linux', 4, 'Linux'),
-      ('iOS', '39', 'ios', 4, 'iOS');
+      ('Xbox One', '49', 'XONE', 1, 'xboxone'),
+      ('PC (Microsoft Windows)', '6', 'PC', 4, 'win'),
+      ('Linux', '3', 'Linux', 4, 'linux'),
+      ('iOS', '39', 'iOS', 4, 'ios');
     
     INSERT INTO games_users_platforms (game_id, user_id, platform_id)
       VALUES

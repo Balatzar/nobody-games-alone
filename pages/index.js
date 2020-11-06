@@ -110,6 +110,9 @@ export default function IndexPage() {
             <b>Dashboard utilisateur</b>
             <ul className="list-decimal pl-6">
               <li>
+                Creation des jeux : mettre les jeux selectionnés dans des pills
+              </li>
+              <li>
                 Rendre plus clair qui joue a quoi depuis ma dashboard (page de
                 comparaison ?)
               </li>
@@ -127,7 +130,6 @@ export default function IndexPage() {
           <li>
             <b>Technique</b>
             <ul className="list-decimal pl-6">
-              <li>PRIO Completer le CRUD des elements de base</li>
               <li>
                 IMPORTANT Refacto les queries SQL pour utiliser les parametres
               </li>
@@ -167,7 +169,10 @@ export default function IndexPage() {
                 Mettre en place un systeme d'error reporting sur le serveur et
                 les clients
               </li>
-              <li>Installer un log sink via vercel</li>
+              <li>
+                Mettre en place une fonction pour exporter le cookie
+                d'authentification
+              </li>
             </ul>
           </li>
         </ul>
