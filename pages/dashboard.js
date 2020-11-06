@@ -4,19 +4,12 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Head from "next/head";
 import useSWR from "swr";
+import Link from "next/link";
+import { prepareTimeslots } from "../utils/helpers";
 
 const localizer = momentLocalizer(moment);
 
 const colors = ["#14F74D", "#F5AA90", "#09AEE6", "#CC562F", "#B53105"];
-
-const prepareTimeslots = (timeslots) => {
-  return timeslots.map(({ start_time, end_time, id, username }) => ({
-    start: start_time.toString(),
-    end: end_time.toString(),
-    id,
-    username: username || null,
-  }));
-};
 
 export default function Dashboard() {
   const { data, error } = useSWR(`/api/pages/dashboard`);
@@ -32,22 +25,9 @@ export default function Dashboard() {
     }
     return acc;
   }, {});
-  const events = prepareTimeslots(timeslots)
-    .map(({ start, end, id }) => ({
-      start: new Date(start),
-      end: new Date(end),
-      id,
-      title: "Moi",
-    }))
-    .concat(
-      prepareTimeslots(otherTimeslots).map(({ start, end, id, username }) => ({
-        start: new Date(start),
-        end: new Date(end),
-        id,
-        title: username,
-        username,
-      }))
-    );
+  const events = prepareTimeslots(timeslots, "Moi").concat(
+    prepareTimeslots(otherTimeslots, "", true)
+  );
   return (
     <>
       <Head>
@@ -59,6 +39,11 @@ export default function Dashboard() {
         {data ? (
           <>
             <h4 className="underline">Mes jeux</h4>
+            <Link
+              href={{ pathname: `/games/new`, query: { go_to: "/dashboard" } }}
+            >
+              <a>Ajouter un jeu</a>
+            </Link>
             <ul>
               {games.map(({ name, id, platforms }) => {
                 return (
@@ -69,6 +54,14 @@ export default function Dashboard() {
               })}
             </ul>
             <h4 className="underline">Mes disponibilités</h4>
+            <Link
+              href={{
+                pathname: `/timeslots/new`,
+                query: { go_to: "/dashboard" },
+              }}
+            >
+              <a>Ajouter des disponibilités</a>
+            </Link>
             <Calendar
               selectable
               localizer={localizer}

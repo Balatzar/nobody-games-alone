@@ -16,12 +16,19 @@ const handler = async (req, res) => {
   `;
 
   try {
+    const destroyTimeslots = await db.query(
+      `
+      DELETE FROM timeslots
+      WHERE user_id = $1
+    `,
+      [req.currentUser.id]
+    );
     const createTimeslots = await db.query(query);
 
-    res.status(200).json(createTimeslots.rows)
+    res.status(200).json(createTimeslots.rows);
   } catch (error) {
     console.warn(error);
-    res.status(400).json(error)
+    res.status(400).json(error);
   }
 };
 

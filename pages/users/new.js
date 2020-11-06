@@ -44,6 +44,7 @@ export default function UserNew() {
 
       <div className="p-20 bg-gray-200 h-screen overflow-scroll pb-30">
         <h3 className="text-center text-2xl">Choisissez un pseudonyme</h3>
+        <p>Votre compte sera stocké en cookie sur votre ordinateur</p>
         <form onSubmit={submitUser}>
           <label>Pseudonyme</label>
           {loading ? (

@@ -97,7 +97,11 @@ export default function GamesNew() {
     const res = await fetch(`/api/games`, query);
     setLoadingSearch(false);
     if (res.status === 200) {
-      router.push("/timeslots/new");
+      if (router.query.go_to) {
+        router.push(router.query.go_to);
+      } else {
+        router.push("/timeslots/new");
+      }
     } else {
       const error = res.json();
       console.warn(error);

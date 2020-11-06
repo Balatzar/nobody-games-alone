@@ -102,37 +102,16 @@ export default function IndexPage() {
           <li>
             <b>Index</b>
             <ul className="list-decimal pl-6">
-              <li>Présenter qui joue a quel jeu</li>
-              <li>Faire un gros bouton CTA</li>
+              <li>Présenter qui joue a quel jeu (quelques exemples)</li>
               <li>Expliquer le concept du site</li>
-              <li>
-                Faire une page qui présente toutes les disponibilités d'un coup
-              </li>
-            </ul>
-          </li>
-          <li>
-            <b>Wizard création de compte</b>
-            <ul className="list-decimal pl-6">
-              <li>
-                Créer des utilisateur via un token stocké sur le local storage
-                (on s'embete pas pour l'instant avec des comptes email/password
-                - systeme de claim plus tard)
-              </li>
-              <li>
-                Choisir des jeux via la rechercher IGDB et les stocker dans
-                postgres s'ils n'existent pas
-              </li>
-              <li>Choisir des crénaux de disponibilité via un calendrier</li>
             </ul>
           </li>
           <li>
             <b>Dashboard utilisateur</b>
             <ul className="list-decimal pl-6">
-              <li>Présenter mes jeux avec bouton pour en rajouter</li>
-              <li>Présenter mes crénaux avec option pour en rajouter</li>
               <li>
-                Afficher des propositions sur mes jeux et mes crénaux en
-                fonction des autres utilisateurs
+                Rendre plus clair qui joue a quoi depuis ma dashboard (page de
+                comparaison ?)
               </li>
             </ul>
           </li>
@@ -148,10 +127,6 @@ export default function IndexPage() {
           <li>
             <b>Technique</b>
             <ul className="list-decimal pl-6">
-              <li>
-                PRIO Améliorer la vue games/new pour pouvoir ajouter plusieurs
-                jeux a la suite via plusieurs recherches
-              </li>
               <li>PRIO Completer le CRUD des elements de base</li>
               <li>
                 IMPORTANT Refacto les queries SQL pour utiliser les parametres
@@ -161,19 +136,24 @@ export default function IndexPage() {
                 marcher sans données
               </li>
               <li>
-                FAIT - PRIO Refactoriser les fetchs pour utiliser SWR et mettre
-                en place de l'error handling et du loading
-              </li>
-              <li>
                 Faire une footer avec des liens vers des pages platforms et
                 games rassemblant toutes les données (SEO)
+              </li>
+              <li>
+                Refactor la creation des disponibilités pour supprimer
+                uniquement via diff et mettre en place un index sur start et end
+                pour l'unicité
               </li>
             </ul>
           </li>
           <li>
             <b>A venir</b>
             <ul className="list-decimal pl-6">
-              <li>FAIT - Spécifier les plateformes pour chaque jeu</li>
+              <li>
+                Voir a l'utilisation s'il faut prioriser la mise en page d'une
+                page profil (trouver des inconnus pour jouer) ou la creation
+                d'une team ou d'evenements (jouer avec ses amis)
+              </li>
               <li>Créer des crénaux récurents</li>
               <li>
                 Un import steam selectif (on récupere tous les jeux et
@@ -181,7 +161,7 @@ export default function IndexPage() {
               </li>
               <li>
                 Permettre de claim un compte temporaire et créer des comptes
-                classiques
+                classiques (a la discord)
               </li>
               <li>
                 Mettre en place un systeme d'error reporting sur le serveur et

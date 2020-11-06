@@ -16,4 +16,14 @@ const mergeObjects = (objects, key) => {
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-export { mergeObjects, fetcher };
+const prepareTimeslots = (timeslots, title = "", titleIsUsername = false) => {
+  return timeslots.map(({ start_time, end_time, id, username }) => ({
+    start: new Date(start_time),
+    end: new Date(end_time),
+    id,
+    username,
+    title: titleIsUsername ? username : title,
+  }));
+};
+
+export { mergeObjects, fetcher, prepareTimeslots };
