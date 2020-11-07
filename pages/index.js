@@ -47,6 +47,9 @@ export default function IndexPage() {
           </Link>
         </div>
       </div>
+      <h2 className="text-3xl text-center text-accent-1">
+        Nos utilisateurs jouent sur...
+      </h2>
       <div className="p-5 flex flex-wrap space-x-4">
         {platforms ? (
           platforms.map((platform) => {
@@ -130,12 +133,9 @@ export default function IndexPage() {
           <li>
             <b>Technique</b>
             <ul className="list-decimal pl-6">
+              <li>Ajouter des created_at a tous les objets</li>
               <li>
                 IMPORTANT Refacto les queries SQL pour utiliser les parametres
-              </li>
-              <li>
-                Refacto la dashboard for etre une page statique et pour pouvoir
-                marcher sans données
               </li>
               <li>
                 Faire une footer avec des liens vers des pages platforms et
