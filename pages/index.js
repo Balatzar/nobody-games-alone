@@ -115,10 +115,6 @@ export default function IndexPage() {
               <li>
                 Creation des jeux : mettre les jeux selectionnés dans des pills
               </li>
-              <li className="underline">
-                Rendre plus clair qui joue a quoi depuis ma dashboard (page de
-                comparaison ?)
-              </li>
             </ul>
           </li>
           <li>
