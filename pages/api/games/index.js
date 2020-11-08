@@ -25,11 +25,11 @@ const handler = async (req, res) => {
             cover ? cover.image_id : ""
           }', '${storyline ? storyline.replace("'", "''") : ""}', '${
             summary ? summary.replace("'", "''") : ""
-          }', '${
+          }', ${
             first_release_date
               ? moment.unix(first_release_date).format("YYYY/MM/DD")
-              : ""
-          }', ${cover ? cover.width : "null"}, ${
+              : null
+          }, ${cover ? cover.width : "null"}, ${
             cover ? cover.height : "null"
           })`;
         }
