@@ -11,6 +11,7 @@ export default async function search(req, res) {
       fields *, platforms.*, cover.*;
       where name ~ *"${req.query.q}"* & platforms != null;
       limit 50;
+      sort first_release_date desc;
     `,
   };
 
