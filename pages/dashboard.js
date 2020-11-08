@@ -6,12 +6,14 @@ import Head from "next/head";
 import useSWR from "swr";
 import Link from "next/link";
 import { prepareTimeslots } from "../utils/helpers";
+import { useRouter } from "next/router";
 
 const localizer = momentLocalizer(moment);
 
 const colors = ["#14F74D", "#F5AA90", "#09AEE6", "#CC562F", "#B53105"];
 
 export default function Dashboard() {
+  const router = useRouter();
   const { data, error } = useSWR(`/api/pages/dashboard`);
   if (error) {
     console.warn(error);
@@ -87,6 +89,12 @@ export default function Dashboard() {
                   className: "",
                   style: newStyle,
                 };
+              }}
+              onSelectEvent={({ username }) => {
+                if (!username) return;
+                router.push(
+                  `/users/compare/${data.currentUser.username}/${username}`
+                );
               }}
             />
           </>

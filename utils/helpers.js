@@ -1,10 +1,16 @@
-const mergeObjects = (objects, key) => {
+const mergeObjects = (objects, key, uniqueFields = null) => {
   return Object.values(
     objects.reduce((acc, object) => {
-      if (acc[object.id]) {
-        acc[object.id][key].push(object[key]);
+      const uniqueKey = uniqueFields
+        ? uniqueFields.reduce((acc, field) => {
+            acc += object[field];
+            return acc;
+          }, "")
+        : object.id;
+      if (acc[uniqueKey]) {
+        acc[uniqueKey][key].push(object[key]);
       } else {
-        acc[object.id] = {
+        acc[uniqueKey] = {
           ...object,
           [key]: [object[key]],
         };
