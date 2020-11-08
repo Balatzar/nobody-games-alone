@@ -142,6 +142,10 @@ export default function IndexPage() {
           <li>
             <b>A venir</b>
             <ul className="list-decimal pl-6">
+              <li>
+                Mettre en place les meta tags pour les previews de partage (page
+                landing - together - games show - platform show)
+              </li>
               <li className="underline">
                 Mettre en place la notion d'équipe qui permet de rassembler
                 plusieurs utilisateurs et créer une dashboard spécifique avec
