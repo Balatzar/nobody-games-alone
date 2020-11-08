@@ -1,6 +1,7 @@
 import Nav from "../components/nav";
 import Link from "next/link";
 import Head from "next/head";
+import Image from "next/image";
 import useSWR from "swr";
 
 export default function IndexPage() {
@@ -10,6 +11,7 @@ export default function IndexPage() {
   }
 
   const platforms = data ? data.platforms : [];
+  const games = data ? data.games : [];
 
   return (
     <div>
@@ -90,6 +92,37 @@ export default function IndexPage() {
                   )}
                 </div>
               </div>
+            );
+          })
+        ) : (
+          <p>Chargement...</p>
+        )}
+      </div>
+      <h2 className="text-3xl text-center text-accent-1">
+        Nos utilisateurs jouent à...
+      </h2>
+      <div className="p-5 flex flex-wrap space-x-4">
+        {games ? (
+          games.map((game) => {
+            return (
+              <Link key={game.id} href={`/games/${game.slug}`}>
+                <div className="max-w-sm rounded overflow-hidden shadow-lg cursor-pointer">
+                  <Image
+                    src={`https://images.igdb.com/igdb/image/upload/t_1080p/${game.cover_image_id}.jpg`}
+                    width={game.cover_width}
+                    height={game.cover_height}
+                    className="w-full"
+                  />
+                  <div className="px-6 py-4">
+                    <div className="font-bold text-xl mb-2">{game.name}</div>
+                    <p className="text-gray-700 text-base">
+                      {game.summary.length > 100
+                        ? `${game.summary.slice(0, 100)}...`
+                        : game.summary}
+                    </p>
+                  </div>
+                </div>
+              </Link>
             );
           })
         ) : (

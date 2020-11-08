@@ -9,8 +9,14 @@ const handler = async (req, res) => {
     INNER JOIN games ON games.id = games_users_platforms.game_id;
   `);
 
+  const fetchGames = await db.query(`
+    SELECT games.* from games
+    LIMIT 10;
+  `);
+
   res.status(200).json({
     platforms: mergeComplexObjects(fetchPlatforms.rows, "g_", "games"),
+    games: fetchGames.rows,
     currentUser: req.currentUser,
   });
 };

@@ -83,7 +83,7 @@ export default function GamesShow({ platforms, currentGame }) {
             src={`https://images.igdb.com/igdb/image/upload/t_1080p/${currentGame.cover_image_id}.jpg`}
             width={currentGame.cover_width}
             height={currentGame.cover_height}
-          ></Image>
+          />
         ) : null}
         <h4 className="underline">
           Les joueurs jouent à {currentGame.name} sur :
