@@ -45,11 +45,13 @@ export default function Dashboard() {
               <a>Ajouter un jeu</a>
             </Link>
             <ul>
-              {games.map(({ name, id, platforms }) => {
+              {games.map(({ name, id, platforms, slug }) => {
                 return (
-                  <li key={id}>
-                    {name} ({platforms.join(", ")})
-                  </li>
+                  <Link key={id} href={`/games/${slug}`}>
+                    <li className="underline cursor-pointer">
+                      {name} ({platforms.join(", ")})
+                    </li>
+                  </Link>
                 );
               })}
             </ul>

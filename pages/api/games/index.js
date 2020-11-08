@@ -1,5 +1,6 @@
 const db = require("../../../db");
 import { withUser } from "../../../utils/withUser";
+import moment from "moment";
 
 const handler = async (req, res) => {
   const { games } = JSON.parse(req.body);
@@ -18,9 +19,21 @@ const handler = async (req, res) => {
 
   try {
     const gamesData = games
-      .map(({ name, id }) => {
-        return `('${name.replace("'", "''")}', '${id}')`;
-      })
+      .map(
+        ({ name, id, slug, cover, storyline, summary, first_release_date }) => {
+          return `('${name.replace("'", "''")}', ${id}, '${slug}', '${
+            cover ? cover.image_id : ""
+          }', '${storyline ? storyline.replace("'", "''") : ""}', '${
+            summary ? summary.replace("'", "''") : ""
+          }', '${
+            first_release_date
+              ? moment.unix(first_release_date).format("YYYY/MM/DD")
+              : ""
+          }', ${cover ? cover.width : "null"}, ${
+            cover ? cover.height : "null"
+          })`;
+        }
+      )
       .join(",");
     const gameNames = games
       .map(({ name }) => `'${name.replace("'", "''")}'`)
@@ -28,7 +41,7 @@ const handler = async (req, res) => {
 
     const gamesQuery = `
       WITH new_games AS(
-        INSERT INTO games (name, igdb_id)
+        INSERT INTO games (name, igdb_id, slug, cover_image_id, storyline, summary, first_release_date, cover_width, cover_height)
           VALUES
             ${gamesData}
         ON CONFLICT ON CONSTRAINT games_name_key DO NOTHING
@@ -43,7 +56,7 @@ const handler = async (req, res) => {
 
     const platformsData = platformsToCreate
       .map(({ name, id, abbreviation, category, slug }) => {
-        return `('${name.replace("'", "''")}', '${id}', '${abbreviation.replace(
+        return `('${name.replace("'", "''")}', ${id}, '${abbreviation.replace(
           "'",
           "''"
         )}', ${category}, '${slug}')`;

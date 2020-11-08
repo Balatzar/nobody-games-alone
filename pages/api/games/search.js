@@ -8,7 +8,7 @@ export default async function search(req, res) {
     method: "POST",
     headers,
     body: `
-      fields *, platforms.*;
+      fields *, platforms.*, cover.*;
       where name ~ *"${req.query.q}"* & platforms != null;
       limit 50;
     `,

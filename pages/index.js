@@ -69,20 +69,19 @@ export default function IndexPage() {
                   </Link>
                 </div>
                 <div className="px-6 pt-4 pb-2">
-                  {platform.games
-                    .split("||")
-                    .slice(0, 3)
-                    .map((game) => {
-                      return (
-                        <span
-                          key={`${platform.id}-${game}`}
-                          className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 text-center"
-                        >
-                          {game}
+                  {platform.games.slice(0, 3).map((game) => {
+                    return (
+                      <Link
+                        key={`${platform.id}-${game.id}`}
+                        href={`/games/${game.slug}`}
+                      >
+                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 text-center cursor-pointer">
+                          {game.name}
                         </span>
-                      );
-                    })}
-                  {platform.games.split("||").length > 3 && (
+                      </Link>
+                    );
+                  })}
+                  {platform.games.length > 3 && (
                     <Link href={`/platforms/${platform.slug}`}>
                       <div className="text-center underline cursor-pointer">
                         Plus de jeux
@@ -105,6 +104,7 @@ export default function IndexPage() {
           <li>
             <b>Index</b>
             <ul className="list-decimal pl-6">
+              <li className="underline">Mettre quelques jeux en avant</li>
               <li>Présenter qui joue a quel jeu (quelques exemples)</li>
               <li>Expliquer le concept du site</li>
             </ul>
@@ -115,19 +115,10 @@ export default function IndexPage() {
               <li>
                 Creation des jeux : mettre les jeux selectionnés dans des pills
               </li>
-              <li>
+              <li className="underline">
                 Rendre plus clair qui joue a quoi depuis ma dashboard (page de
                 comparaison ?)
               </li>
-            </ul>
-          </li>
-          <li>
-            <b>Page jeu</b>
-            <ul className="list-decimal pl-6">
-              <li>
-                Avoir une jolie page jeu publique qui présente les informations
-              </li>
-              <li>Montrer qui y joue et quand</li>
             </ul>
           </li>
           <li>
@@ -151,6 +142,11 @@ export default function IndexPage() {
           <li>
             <b>A venir</b>
             <ul className="list-decimal pl-6">
+              <li className="underline">
+                Mettre en place la notion d'équipe qui permet de rassembler
+                plusieurs utilisateurs et créer une dashboard spécifique avec
+                les dispo de tous les membres de l'equipe
+              </li>
               <li>
                 Voir a l'utilisation s'il faut prioriser la mise en page d'une
                 page profil (trouver des inconnus pour jouer) ou la creation
@@ -169,7 +165,7 @@ export default function IndexPage() {
                 Mettre en place un systeme d'error reporting sur le serveur et
                 les clients
               </li>
-              <li>
+              <li className="underline">
                 Mettre en place une fonction pour exporter le cookie
                 d'authentification
               </li>

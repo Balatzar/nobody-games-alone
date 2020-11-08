@@ -95,7 +95,6 @@ export default function GamesNew() {
     };
 
     const res = await fetch(`/api/games`, query);
-    setLoadingSearch(false);
     if (res.status === 200) {
       if (router.query.go_to) {
         router.push(router.query.go_to);
@@ -103,8 +102,8 @@ export default function GamesNew() {
         router.push("/timeslots/new");
       }
     } else {
-      const error = res.json();
-      console.warn(error);
+      setLoadingCreate(false);
+      console.warn(res);
     }
   };
 

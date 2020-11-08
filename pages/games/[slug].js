@@ -4,6 +4,7 @@ import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import { prepareTimeslots } from "../../utils/helpers";
 import useSWR from "swr";
@@ -13,38 +14,38 @@ const localizer = momentLocalizer(moment);
 const colors = ["#14F74D", "#F5AA90", "#09AEE6", "#CC562F", "#B53105"];
 
 export async function getServerSideProps(context) {
-  const fetchPlatform = await db.query(
+  const fetchGame = await db.query(
     `
-    SELECT * FROM platforms
+    SELECT name, id, slug, cover_image_id, cover_width, cover_height, summary, storyline FROM games
     WHERE slug = $1
   `,
     [context.params.slug]
   );
-  const currentPlatform = fetchPlatform.rows[0];
+  const currentGame = fetchGame.rows[0];
 
-  const fetchGames = await db.query(
+  const fetchPlatforms = await db.query(
     `
-    SELECT DISTINCT games.id, games.name, games.slug FROM games
-    INNER JOIN games_users_platforms ON games_users_platforms.game_id = games.id
-    INNER JOIN platforms ON platforms.id = games_users_platforms.platform_id
-    WHERE platforms.id = $1;
+    SELECT DISTINCT platforms.* FROM platforms
+    INNER JOIN games_users_platforms ON games_users_platforms.platform_id = platforms.id
+    INNER JOIN games ON games.id = games_users_platforms.game_id
+    WHERE games.id = $1;
   `,
-    [currentPlatform.id]
+    [currentGame.id]
   );
 
   const data = {
     props: {
-      games: fetchGames.rows,
-      currentPlatform,
+      platforms: fetchPlatforms.rows,
+      currentGame,
     },
   };
   console.log(data.props);
   return data;
 }
 
-export default function PlatformsShow({ games, currentPlatform }) {
+export default function GamesShow({ platforms, currentGame }) {
   const { data, error } = useSWR(
-    `/api/timeslots/platform?slug=${currentPlatform.slug}`
+    `/api/timeslots/game?slug=${currentGame.slug}`
   );
   if (error) {
     console.warn(error);
@@ -60,18 +61,37 @@ export default function PlatformsShow({ games, currentPlatform }) {
   return (
     <>
       <Head>
-        <title>{currentPlatform.name} - Nobody Games Alone</title>
+        <title>{currentGame.name} - Nobody Games Alone</title>
       </Head>
       <Nav title={true} />
       <div className="p-20 bg-gray-200 h-screen overflow-scroll pb-30">
-        <h3 className="text-center text-2xl">{currentPlatform.name}</h3>
+        <h3 className="text-center text-2xl">{currentGame.name}</h3>
+        {currentGame.summary ? (
+          <>
+            <p>Présentation</p>
+            <p>{currentGame.summary}</p>
+          </>
+        ) : null}
+        {currentGame.storyline ? (
+          <>
+            <p>Résumé</p>
+            <p>{currentGame.storyline}</p>
+          </>
+        ) : null}
+        {currentGame.cover_image_id ? (
+          <Image
+            src={`https://images.igdb.com/igdb/image/upload/t_1080p/${currentGame.cover_image_id}.jpg`}
+            width={currentGame.cover_width}
+            height={currentGame.cover_height}
+          ></Image>
+        ) : null}
         <h4 className="underline">
-          Les joueurs sur {currentPlatform.abbreviation} jouent a :
+          Les joueurs jouent à {currentGame.name} sur :
         </h4>
         <ul>
-          {games.map(({ name, id, slug }) => {
+          {platforms.map(({ name, id, slug }) => {
             return (
-              <Link key={id} href={`/games/${slug}`}>
+              <Link key={id} href={`/platforms/${slug}`}>
                 <li className="underline cursor-pointer">{name}</li>
               </Link>
             );

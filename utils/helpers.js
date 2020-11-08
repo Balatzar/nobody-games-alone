@@ -14,6 +14,28 @@ const mergeObjects = (objects, key) => {
   );
 };
 
+const mergeComplexObjects = (rows, prefix, newColumn) => {
+  const findAssociatedFields = RegExp(`^${prefix}`);
+
+  return Object.values(
+    rows.reduce((acc, row) => {
+      const associatedObject = Object.keys(row)
+        .filter((key) => findAssociatedFields.test(key))
+        .reduce((accc, key) => {
+          accc[key.replace(findAssociatedFields, "")] = row[key];
+          delete row[key];
+          return accc;
+        }, {});
+      if (acc[row.id]) {
+        acc[row.id][newColumn].push(associatedObject);
+      } else {
+        acc[row.id] = { ...row, [newColumn]: [associatedObject] };
+      }
+      return acc;
+    }, {})
+  );
+};
+
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const prepareTimeslots = (timeslots, title = "", titleIsUsername = false) => {
@@ -26,4 +48,4 @@ const prepareTimeslots = (timeslots, title = "", titleIsUsername = false) => {
   }));
 };
 
-export { mergeObjects, fetcher, prepareTimeslots };
+export { mergeObjects, fetcher, prepareTimeslots, mergeComplexObjects };
