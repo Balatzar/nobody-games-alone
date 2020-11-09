@@ -27,8 +27,8 @@ const handler = async (req, res) => {
             summary ? summary.replace("'", "''") : ""
           }', ${
             first_release_date
-              ? moment.unix(first_release_date).format("YYYY/MM/DD")
-              : null
+              ? `'${moment.unix(first_release_date).format("YYYY/MM/DD")}'`
+              : "null"
           }, ${cover ? cover.width : "null"}, ${
             cover ? cover.height : "null"
           })`;

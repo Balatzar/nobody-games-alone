@@ -1,6 +1,8 @@
 const db = require("../db");
+const moment = require("moment");
 
 (async function() {
+  const today = moment().format("YYYY-MM-DD");
   const res = await db.query(`
     CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -91,8 +93,8 @@ const db = require("../db");
     
     INSERT INTO timeslots (start_time, end_time, user_id)
       VALUES
-      ('2020-11-03 02:30:00+01', '2020-11-03 07:30:00+01', 1),
-      ('2020-11-03 02:30:00+01', '2020-11-03 05:30:00+01', 2);
+      ('${today} 02:30:00+01', '${today} 07:30:00+01', 1),
+      ('${today} 02:30:00+01', '${today} 05:30:00+01', 2);
   `);
   console.log(res);
 
