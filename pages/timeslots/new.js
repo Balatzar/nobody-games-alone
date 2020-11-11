@@ -9,8 +9,7 @@ import useSWR from "swr";
 import { prepareTimeslots } from "../../utils/helpers";
 
 const localizer = momentLocalizer(moment);
-// Make a better function to generate IDs, checking the existing ones
-// when we get some from the DB
+
 const ids = {};
 let currentId = 0;
 
@@ -104,8 +103,9 @@ export default function TimeslotsNew() {
           <button
             type="button"
             disabled={!events.length}
-            className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center absolute ${!events.length &&
-              "opacity-50 cursor-not-allowed"}`}
+            className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center absolute ${
+              !events.length && "opacity-50 cursor-not-allowed"
+            }`}
             onClick={submitEvents}
           >
             Disponibilités sélectionnés

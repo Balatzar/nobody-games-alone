@@ -1,14 +1,16 @@
 const db = require("../db");
 const moment = require("moment");
 
-(async function() {
+(async function () {
   const today = moment().format("YYYY-MM-DD");
   const res = await db.query(`
     CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
     DROP TABLE IF EXISTS games_users_platforms;
+    DROP TABLE IF EXISTS teams_users;
     DROP TABLE IF EXISTS games;
     DROP TABLE IF EXISTS timeslots;
+    DROP TABLE IF EXISTS teams;
     DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS platforms;
 
@@ -62,6 +64,27 @@ const moment = require("moment");
       start_time TIMESTAMPTZ NOT NULL,
       end_time TIMESTAMPTZ NOT NULL,
       user_id INT,
+      CONSTRAINT fk_user
+        FOREIGN KEY(user_id)
+          REFERENCES users(id)
+    );
+
+    CREATE TABLE teams (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR NOT NULL UNIQUE,
+      creator_id INT NOT NULL,
+      invite_token uuid DEFAULT uuid_generate_v4(),
+      CONSTRAINT fk_user
+        FOREIGN KEY(creator_id)
+          REFERENCES users(id)
+    );
+
+    CREATE TABLE teams_users (
+      team_id INT,
+      user_id INT,
+      CONSTRAINT fk_team
+        FOREIGN KEY(team_id)
+          REFERENCES teams(id),
       CONSTRAINT fk_user
         FOREIGN KEY(user_id)
           REFERENCES users(id)

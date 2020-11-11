@@ -11,6 +11,7 @@ const handler = async (req, res) => {
 
   const fetchGames = await db.query(`
     SELECT games.* from games
+    WHERE cover_image_id != ''
     LIMIT 10;
   `);
 

@@ -72,7 +72,9 @@ export default function PlatformsShow({ games, currentPlatform }) {
           {games.map(({ name, id, slug }) => {
             return (
               <Link key={id} href={`/games/${slug}`}>
-                <li className="underline cursor-pointer">{name}</li>
+                <li className="underline cursor-pointer">
+                  <a>{name}</a>
+                </li>
               </Link>
             );
           })}

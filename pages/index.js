@@ -29,23 +29,23 @@ export default function IndexPage() {
         <div className="justify-center pt-4 flex">
           {data && data.currentUser && data.currentUser.username ? (
             <Link href="/dashboard">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center">
+              <a className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center">
                 Ma dashboard
-              </button>
+              </a>
             </Link>
           ) : (
             <Link href="/users/new">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center">
+              <a className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center">
                 C'est parti !
-              </button>
+              </a>
             </Link>
           )}
         </div>
         <div className="justify-center pt-4 flex">
           <Link href="/together">
-            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-center">
+            <a className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-center">
               Explorer
-            </button>
+            </a>
           </Link>
         </div>
       </div>
@@ -66,7 +66,7 @@ export default function IndexPage() {
                 <div className="px-6 py-4">
                   <Link href={`/platforms/${platform.slug}`}>
                     <div className="font-bold text-xl mb-2 text-center underline cursor-pointer">
-                      {platform.name}
+                      <a>{platform.name}</a>
                     </div>
                   </Link>
                 </div>
@@ -77,16 +77,16 @@ export default function IndexPage() {
                         key={`${platform.id}-${game.id}`}
                         href={`/games/${game.slug}`}
                       >
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 text-center cursor-pointer">
+                        <a className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 text-center cursor-pointer">
                           {game.name}
-                        </span>
+                        </a>
                       </Link>
                     );
                   })}
                   {platform.games.length > 3 && (
                     <Link href={`/platforms/${platform.slug}`}>
                       <div className="text-center underline cursor-pointer">
-                        Plus de jeux
+                        <a>Plus de jeux</a>
                       </div>
                     </Link>
                   )}
@@ -106,22 +106,24 @@ export default function IndexPage() {
           games.map((game) => {
             return (
               <Link key={game.id} href={`/games/${game.slug}`}>
-                <div className="max-w-sm rounded overflow-hidden shadow-lg cursor-pointer">
-                  <Image
-                    src={`https://images.igdb.com/igdb/image/upload/t_1080p/${game.cover_image_id}.jpg`}
-                    width={game.cover_width}
-                    height={game.cover_height}
-                    className="w-full"
-                  />
-                  <div className="px-6 py-4">
-                    <div className="font-bold text-xl mb-2">{game.name}</div>
-                    <p className="text-gray-700 text-base">
-                      {game.summary.length > 100
-                        ? `${game.summary.slice(0, 100)}...`
-                        : game.summary}
-                    </p>
+                <a>
+                  <div className="max-w-sm rounded overflow-hidden shadow-lg cursor-pointer">
+                    <Image
+                      src={`https://images.igdb.com/igdb/image/upload/t_1080p/${game.cover_image_id}.jpg`}
+                      width={game.cover_width}
+                      height={game.cover_height}
+                      className="w-full"
+                    />
+                    <div className="px-6 py-4">
+                      <div className="font-bold text-xl mb-2">{game.name}</div>
+                      <p className="text-gray-700 text-base">
+                        {game.summary.length > 100
+                          ? `${game.summary.slice(0, 100)}...`
+                          : game.summary}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                </a>
               </Link>
             );
           })

@@ -52,7 +52,9 @@ export default function Dashboard() {
                   return (
                     <Link key={id} href={`/games/${slug}`}>
                       <li className="underline cursor-pointer">
-                        {name} ({platforms.join(", ")})
+                        <a>
+                          {name} ({platforms.join(", ")})
+                        </a>
                       </li>
                     </Link>
                   );
@@ -94,7 +96,9 @@ export default function Dashboard() {
                   return (
                     <Link key={id} href={`/games/${slug}`}>
                       <li className="underline cursor-pointer">
-                        {name} ({platforms.join(", ")})
+                        <a>
+                          {name} ({platforms.join(", ")})
+                        </a>
                       </li>
                     </Link>
                   );

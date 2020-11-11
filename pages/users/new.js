@@ -3,11 +3,24 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { setCookie } from "nookies";
 import Head from "next/head";
+import useSWR from "swr";
 
 export default function UserNew() {
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { invite } = router.query;
+
+  const { data: team, error } = useSWR(
+    `/api/teams/informations?invite=${invite}`,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  );
+  if (error) {
+    console.warn(error);
+  }
 
   async function submitUser(event) {
     event.preventDefault();
@@ -16,12 +29,12 @@ export default function UserNew() {
 
     const query = {
       method: "POST",
-      body: JSON.stringify({ username }),
+      body: JSON.stringify({ username, invite }),
     };
 
     const res = await fetch(`/api/users`, query);
     const data = await res.json();
-    const { temp_token, username: savedusername } = data[0];
+    const { temp_token, username: savedusername } = data;
     setCookie(null, "temp_token", temp_token, {
       maxAge: 10 * 365 * 24 * 60 * 60, // 10 years
       path: "/",
@@ -43,6 +56,19 @@ export default function UserNew() {
       <Nav title={true} />
 
       <div className="p-20 bg-gray-200 h-screen overflow-scroll pb-30">
+        {invite && team ? (
+          <>
+            <h3 className="text-center text-4xl">Bienvenue !</h3>
+            <p>
+              Vous avez été invité(e) à rejoindre l'équipe{" "}
+              <span className="font-bold">{team.name}</span> par{" "}
+              <span className="font-bold">{team.username}</span>. Nobody Games
+              Alone est un site pour trouver des disponibilités communes pour
+              jouer entre amis ! Vous allez pouvoir créer votre compte en 2
+              minutes et voir les disponibilités de vos amis !
+            </p>
+          </>
+        ) : null}
         <h3 className="text-center text-2xl">Choisissez un pseudonyme</h3>
         <p>Votre compte sera stocké en cookie sur votre ordinateur</p>
         <form onSubmit={submitUser}>

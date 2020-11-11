@@ -8,6 +8,7 @@
     "createDb": "node ./db/createDb.js"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.4.0",
     "moment": "^2.29.1",
     "next": "latest",
     "nookies": "^2.5.0",
