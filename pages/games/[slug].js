@@ -25,7 +25,7 @@ export async function getServerSideProps(context) {
 
   const fetchPlatforms = await db.query(
     `
-    SELECT DISTINCT platforms.* FROM platforms
+    SELECT DISTINCT platforms.id, platforms.name, platforms.slug FROM platforms
     INNER JOIN games_users_platforms ON games_users_platforms.platform_id = platforms.id
     INNER JOIN games ON games.id = games_users_platforms.game_id
     WHERE games.id = $1;
@@ -62,6 +62,31 @@ export default function GamesShow({ platforms, currentGame }) {
     <>
       <Head>
         <title>{currentGame.name} - Nobody Games Alone</title>
+        <meta name="description" content={currentGame.summary} />
+        <meta property="og:title" content={currentGame.name} key="ogtitle" />
+        <meta
+          property="og:description"
+          content={currentGame.summary}
+          key="ogdesc"
+        />
+        <meta
+          property="og:url"
+          content={`${process.env.NEXT_PUBLIC_DOMAIN_URL}/games/${currentGame.slug}`}
+          key="ogurl"
+        />
+        <meta
+          property="og:image"
+          content={
+            currentGame.cover_image_id &&
+            `https://images.igdb.com/igdb/image/upload/t_1080p/${currentGame.cover_image_id}.jpg`
+          }
+          key="ogimage"
+        />
+        <meta
+          property="og:site_name"
+          content="Nobody Games Alone"
+          key="ogsitename"
+        />
       </Head>
       <Nav title={true} />
       <div className="p-20 bg-gray-200 h-screen overflow-scroll pb-30">
