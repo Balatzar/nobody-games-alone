@@ -16,6 +16,7 @@ const moment = require("moment");
 
     CREATE TABLE users (
       id SERIAL PRIMARY KEY,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       temp_token uuid DEFAULT uuid_generate_v4(),
       username VARCHAR(100) NOT NULL UNIQUE
     );
@@ -24,6 +25,7 @@ const moment = require("moment");
 
     CREATE TABLE games (
       id SERIAL PRIMARY KEY,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       name VARCHAR NOT NULL UNIQUE,
       slug VARCHAR NOT NULL UNIQUE,
       igdb_id INT NOT NULL UNIQUE,
@@ -37,6 +39,7 @@ const moment = require("moment");
 
     CREATE TABLE platforms (
       id SERIAL PRIMARY KEY,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       name VARCHAR NOT NULL UNIQUE,
       igdb_id INT NOT NULL UNIQUE,
       slug VARCHAR NOT NULL UNIQUE,
@@ -48,6 +51,7 @@ const moment = require("moment");
       game_id INT,
       user_id INT,
       platform_id INT,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       CONSTRAINT fk_game
         FOREIGN KEY(game_id)
           REFERENCES games(id),
@@ -61,6 +65,7 @@ const moment = require("moment");
 
     CREATE TABLE timeslots (
       id SERIAL PRIMARY KEY,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       start_time TIMESTAMPTZ NOT NULL,
       end_time TIMESTAMPTZ NOT NULL,
       user_id INT,
@@ -71,6 +76,7 @@ const moment = require("moment");
 
     CREATE TABLE teams (
       id SERIAL PRIMARY KEY,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       name VARCHAR NOT NULL UNIQUE,
       creator_id INT NOT NULL,
       invite_token uuid DEFAULT uuid_generate_v4(),
@@ -82,6 +88,7 @@ const moment = require("moment");
     CREATE TABLE teams_users (
       team_id INT,
       user_id INT,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       CONSTRAINT fk_team
         FOREIGN KEY(team_id)
           REFERENCES teams(id),
