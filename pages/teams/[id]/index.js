@@ -61,6 +61,11 @@ export default function TeamsShow({ currentTeam }) {
         <h3 className="text-center text-2xl">{currentTeam.name}</h3>
         {data ? (
           <>
+            {currentTeam.creator_id === currentUser.id ? (
+              <Link href={`/teams/${currentTeam.id}/invite`}>
+                <a className="underline">Inviter</a>
+              </Link>
+            ) : null}
             <ul>
               {users.map(({ username }) => {
                 return <li key={username}>{username}</li>;
