@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { parseCookies } from "nookies";
 import useSwr from "swr";
 
 export default function Nav({ title }) {
-  const {data, error} = useSwr(`/api/users/informations`)
+  const { data, error } = useSwr(`/api/users/informations`);
 
   return (
     <nav>

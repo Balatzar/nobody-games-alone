@@ -87,6 +87,15 @@ export default function Dashboard() {
                     );
                   })}
                 </ul>
+                <Link
+                  href={{
+                    pathname: `/users/migrate`,
+                  }}
+                >
+                  <a className="text-right block underline">
+                    Migrer mon compte
+                  </a>
+                </Link>
               </div>
             </div>
             <h4 className="underline mt-5">Mes disponibilités</h4>

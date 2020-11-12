@@ -40,11 +40,6 @@ export default function UserNew() {
       path: "/",
       sameSite: "strict",
     });
-    setCookie(null, "username", savedusername, {
-      maxAge: 10 * 365 * 24 * 60 * 60, // 10 years
-      path: "/",
-      sameSite: "strict",
-    });
     router.push(`/games/new`);
   }
 

@@ -139,7 +139,6 @@ export default function IndexPage() {
           <li>
             <b>Index</b>
             <ul className="list-decimal pl-6">
-              <li className="underline">Mettre quelques jeux en avant</li>
               <li>Présenter qui joue a quel jeu (quelques exemples)</li>
               <li>Expliquer le concept du site</li>
             </ul>
@@ -155,7 +154,6 @@ export default function IndexPage() {
           <li>
             <b>Technique</b>
             <ul className="list-decimal pl-6">
-              <li>Ajouter des created_at a tous les objets</li>
               <li>
                 IMPORTANT Refacto les queries SQL pour utiliser les parametres
               </li>
@@ -175,7 +173,7 @@ export default function IndexPage() {
             <ul className="list-decimal pl-6">
               <li>
                 Mettre en place les meta tags pour les previews de partage (page
-                landing - together - games show - platform show)
+                landing - together - platform show)
               </li>
               <li className="underline">
                 Mettre en place la notion d'équipe qui permet de rassembler
