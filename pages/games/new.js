@@ -2,6 +2,7 @@ import Nav from "../../components/nav";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import Link from "next/link";
 
 export default function GamesNew() {
   const [games, setGames] = useState([]);
@@ -137,9 +138,16 @@ export default function GamesNew() {
               />
             </>
           )}
-          <a href="https://airtable.com/shrw0s7oTWD2alWxx" target="_blank">
+          <a
+            className="underline"
+            href="https://airtable.com/shrw0s7oTWD2alWxx"
+            target="_blank"
+          >
             Jeu manquant ?
-          </a>
+          </a>{" "}
+          <Link href={`/games/steam`}>
+            <a className="underline">Import Steam</a>
+          </Link>
         </form>
         <form>
           {!!games.length && (
@@ -181,8 +189,9 @@ export default function GamesNew() {
           <button
             type="button"
             disabled={!selectedGames.length}
-            className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center absolute ${!selectedGames.length &&
-              "opacity-50 cursor-not-allowed"}`}
+            className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center absolute ${
+              !selectedGames.length && "opacity-50 cursor-not-allowed"
+            }`}
             onClick={submitGames}
           >
             Jeux sélectionnés
