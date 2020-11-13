@@ -1,8 +1,9 @@
 import Nav from "../../components/nav";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
+import { parseCookies, setCookie } from "nookies";
 
 export default function GamesNew() {
   const [games, setGames] = useState([]);
@@ -10,18 +11,32 @@ export default function GamesNew() {
   const [selectedGames, setSelectedGames] = useState([]);
   const [loadingSearch, setLoadingSearch] = useState(false);
   const [loadingCreate, setLoadingCreate] = useState(false);
+  const [importedGames, setImportedGames] = useState([]);
   const router = useRouter();
 
-  const searchGame = async (event) => {
-    event.preventDefault();
-    if (!query) return;
+  useEffect(() => {
+    const { games } = parseCookies(document.cookie);
+    if (!games) return;
+    const parsedGames = JSON.parse(games);
+    setImportedGames(parsedGames);
+    const query = parsedGames.find(({ imported }) => !imported).value;
+    setQuery(query);
+    triggerSearchGame(query);
+  }, []);
 
+  const triggerSearchGame = async (query) => {
     setLoadingSearch(true);
     const res = await fetch(`/api/games/search?q=${query}`);
     const { data } = await res.json();
     const gameIds = selectedGames.map(({ gameId }) => gameId);
     setGames([...games.filter(({ id }) => gameIds.includes(id)), ...data]);
     setLoadingSearch(false);
+  };
+
+  const searchGame = (event) => {
+    event.preventDefault();
+    if (!query) return;
+    triggerSearchGame(query);
   };
 
   const checkGame = (event, game) => {
@@ -97,6 +112,19 @@ export default function GamesNew() {
 
     const res = await fetch(`/api/games`, query);
     if (res.status === 200) {
+      if (importedGames.length) {
+        importedGames[
+          importedGames.findIndex(({ imported }) => !imported)
+        ].imported = true;
+
+        setCookie(null, "games", JSON.stringify(importedGames), {
+          maxAge: 10 * 365 * 24 * 60 * 60, // 10 years
+          path: "/",
+          sameSite: "strict",
+        });
+        location.reload();
+        return;
+      }
       if (router.query.go_to) {
         router.push(router.query.go_to);
       } else {
@@ -116,7 +144,7 @@ export default function GamesNew() {
       <Nav title={true} />
 
       <div className="p-20 bg-gray-200 h-screen overflow-scroll pb-30">
-        <h3 className="text-center text-2xl">Sélectionner des jeux</h3>
+        <h3 className="text-center text-2xl">Ajouter des jeux</h3>
         <form onSubmit={searchGame}>
           <label>Nom : </label>
           {loadingSearch ? (
@@ -145,9 +173,11 @@ export default function GamesNew() {
           >
             Jeu manquant ?
           </a>{" "}
-          <Link href={`/games/steam`}>
-            <a className="underline">Import Steam</a>
-          </Link>
+          {importedGames.length ? null : (
+            <Link href={`/games/steam`}>
+              <a className="underline">Import Steam</a>
+            </Link>
+          )}
         </form>
         <form>
           {!!games.length && (

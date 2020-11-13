@@ -13,6 +13,6 @@ export default async function search(req, res) {
     });
   } catch (error) {
     console.warn(error);
-    res.status(400).json(error);
+    res.status(400).json({ error: "Steam API request failed" });
   }
 }
