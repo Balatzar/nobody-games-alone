@@ -1,4 +1,5 @@
 import Nav from "../../components/nav";
+import GameImport from "../../components/gameImport";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -112,7 +113,13 @@ export default function GamesNew() {
 
     const res = await fetch(`/api/games`, query);
     if (res.status === 200) {
-      if (importedGames.length) {
+      const currentImportedGameIndex = importedGames.findIndex(
+        ({ imported }) => !imported
+      );
+      if (
+        importedGames.length &&
+        importedGames.length != currentImportedGameIndex + 1
+      ) {
         importedGames[
           importedGames.findIndex(({ imported }) => !imported)
         ].imported = true;
@@ -125,6 +132,11 @@ export default function GamesNew() {
         location.reload();
         return;
       }
+      setCookie(null, "games", "", {
+        maxAge: -999999999, // delete cookie
+        path: "/",
+        sameSite: "strict",
+      });
       if (router.query.go_to) {
         router.push(router.query.go_to);
       } else {
@@ -144,6 +156,11 @@ export default function GamesNew() {
       <Nav title={true} />
 
       <div className="p-20 bg-gray-200 h-screen overflow-scroll pb-30">
+        {importedGames.length ? (
+          <div style={{ marginTop: "-100px" }}>
+            <GameImport games={importedGames} />
+          </div>
+        ) : null}
         <h3 className="text-center text-2xl">Ajouter des jeux</h3>
         <form onSubmit={searchGame}>
           <label>Nom : </label>
