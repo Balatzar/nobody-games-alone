@@ -97,7 +97,7 @@ export default function GamesSteam() {
             </p>
             <p>
               Après selectionné des jeux vous devrez utiliser la fonction de
-              recherche de notre site pour les synchroniser (on voudrait pas
+              recherche de notre site pour les synchroniser (on ne voudrait pas
               ajouter n'importe quoi !)
             </p>
             {games.map((game) => {
