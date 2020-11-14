@@ -128,7 +128,7 @@ export default function GamesSteam() {
           }`}
           onClick={submitGames}
         >
-          Jeux sélectionnés
+          Lancer l'importation
         </button>
       </footer>
     </>

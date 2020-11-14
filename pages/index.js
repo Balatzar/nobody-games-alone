@@ -175,11 +175,6 @@ export default function IndexPage() {
                 Mettre en place les meta tags pour les previews de partage (page
                 landing - together - platform show)
               </li>
-              <li className="underline">
-                Mettre en place la notion d'équipe qui permet de rassembler
-                plusieurs utilisateurs et créer une dashboard spécifique avec
-                les dispo de tous les membres de l'equipe
-              </li>
               <li>
                 Voir a l'utilisation s'il faut prioriser la mise en page d'une
                 page profil (trouver des inconnus pour jouer) ou la creation
@@ -187,20 +182,12 @@ export default function IndexPage() {
               </li>
               <li>Créer des crénaux récurents</li>
               <li>
-                Un import steam selectif (on récupere tous les jeux et
-                l'utilisateur check ceux qu'il ou elle veut importer)
-              </li>
-              <li>
                 Permettre de claim un compte temporaire et créer des comptes
                 classiques (a la discord)
               </li>
               <li>
                 Mettre en place un systeme d'error reporting sur le serveur et
                 les clients
-              </li>
-              <li className="underline">
-                Mettre en place une fonction pour exporter le cookie
-                d'authentification
               </li>
             </ul>
           </li>
