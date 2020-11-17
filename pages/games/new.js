@@ -16,16 +16,6 @@ export default function GamesNew() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const { games } = parseCookies(document.cookie);
-    if (!games) return;
-    const parsedGames = JSON.parse(games);
-    setImportedGames(parsedGames);
-    const query = parsedGames.find(({ imported }) => !imported).value;
-    setQuery(query);
-    triggerSearchGame(query);
-  }, []);
-
   const submitId = async (e) => {
     e.preventDefault();
     setLoading(true);
