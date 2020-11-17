@@ -1,9 +1,12 @@
 const { Pool } = require("pg");
-const pool = new Pool({
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
+const config = process.env.PGUSER
+  ? {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    }
+  : {};
+const pool = new Pool(config);
 module.exports = {
   query: (text, params) => {
     console.log(text);
