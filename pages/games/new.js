@@ -1,5 +1,4 @@
 import Nav from "../../components/nav";
-import GameImport from "../../components/gameImport";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -12,7 +11,9 @@ export default function GamesNew() {
   const [selectedGames, setSelectedGames] = useState([]);
   const [loadingSearch, setLoadingSearch] = useState(false);
   const [loadingCreate, setLoadingCreate] = useState(false);
-  const [importedGames, setImportedGames] = useState([]);
+  const [steamImportMode, setSteamImportMode] = useState(false);
+  const [id, setId] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -24,6 +25,17 @@ export default function GamesNew() {
     setQuery(query);
     triggerSearchGame(query);
   }, []);
+
+  const submitId = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const res = await fetch(`/api/games/steam?id=${id}`);
+    const { games: importedGames } = await res.json();
+
+    setLoading(false);
+    setGames(importedGames);
+  };
 
   const triggerSearchGame = async (query) => {
     setLoadingSearch(true);
@@ -91,6 +103,14 @@ export default function GamesNew() {
     }
   };
 
+  const goToNextPage = () => {
+    if (router.query.go_to) {
+      router.push(router.query.go_to);
+    } else {
+      router.push("/timeslots/new");
+    }
+  };
+
   const submitGames = async () => {
     setLoadingCreate(true);
     const selectedGameIds = selectedGames.map(({ gameId }) => gameId);
@@ -113,35 +133,7 @@ export default function GamesNew() {
 
     const res = await fetch(`/api/games`, query);
     if (res.status === 200) {
-      const currentImportedGameIndex = importedGames.findIndex(
-        ({ imported }) => !imported
-      );
-      if (
-        importedGames.length &&
-        importedGames.length != currentImportedGameIndex + 1
-      ) {
-        importedGames[
-          importedGames.findIndex(({ imported }) => !imported)
-        ].imported = true;
-
-        setCookie(null, "games", JSON.stringify(importedGames), {
-          maxAge: 10 * 365 * 24 * 60 * 60, // 10 years
-          path: "/",
-          sameSite: "strict",
-        });
-        location.reload();
-        return;
-      }
-      setCookie(null, "games", "", {
-        maxAge: -999999999, // delete cookie
-        path: "/",
-        sameSite: "strict",
-      });
-      if (router.query.go_to) {
-        router.push(router.query.go_to);
-      } else {
-        router.push("/timeslots/new");
-      }
+      goToNextPage();
     } else {
       setLoadingCreate(false);
       console.warn(res);
@@ -156,46 +148,74 @@ export default function GamesNew() {
       <Nav title={true} />
 
       <div className="p-20 bg-gray-200 h-screen overflow-scroll pb-30">
-        {importedGames.length ? (
-          <div style={{ marginTop: "-100px" }}>
-            <GameImport games={importedGames} />
-          </div>
-        ) : null}
-        <h3 className="text-center text-2xl">Ajouter des jeux</h3>
-        <form onSubmit={searchGame}>
-          <label>Nom : </label>
-          {loadingSearch ? (
-            <span>Chargement...</span>
-          ) : (
-            <>
-              <input
-                type="text"
-                name="q"
-                value={query}
-                onChange={(event) => {
-                  setQuery(event.target.value);
-                }}
-              />
-              <input
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-1 px-2 rounded text-center border-l-8"
-                type="submit"
-                value="Chercher"
-              />
-            </>
-          )}
-          <a
-            className="underline"
-            href="https://airtable.com/shrw0s7oTWD2alWxx"
-            target="_blank"
-          >
-            Jeu manquant ?
-          </a>{" "}
-          {importedGames.length ? null : (
-            <Link href={`/games/steam`}>
-              <a className="underline">Import Steam</a>
-            </Link>
-          )}
-        </form>
+        {steamImportMode ? (
+          <>
+            <h3 className="text-center text-2xl">Import Steam</h3>
+            <p>
+              Veuillez récupérer votre ID steam en chiffre.{" "}
+              <a
+                className="underline"
+                href="https://steamidfinder.com/"
+                target="_blank"
+              >
+                Ce site
+              </a>{" "}
+              peut vous aider (ouverture dans un nouvel onglet). Votre ID
+              devrait ressembler à ça : 76561198076185971.
+            </p>
+            {loading ? (
+              <p>Chargement...</p>
+            ) : (
+              <form onSubmit={submitId}>
+                <label>Votre ID :</label>
+                <input value={id} onChange={(e) => setId(e.target.value)} />
+                <br />
+                <button className="btn-blue" type="submit">
+                  Importer
+                </button>
+              </form>
+            )}
+          </>
+        ) : (
+          <>
+            <h3 className="text-center text-2xl">Ajouter des jeux</h3>
+            <form onSubmit={searchGame}>
+              <label>Nom : </label>
+              {loadingSearch ? (
+                <span>Chargement...</span>
+              ) : (
+                <>
+                  <input
+                    type="text"
+                    name="q"
+                    value={query}
+                    onChange={(event) => {
+                      setQuery(event.target.value);
+                    }}
+                  />
+                  <input
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-1 px-2 rounded text-center border-l-8"
+                    type="submit"
+                    value="Chercher"
+                  />
+                </>
+              )}
+              <a
+                className="underline"
+                href="https://airtable.com/shrw0s7oTWD2alWxx"
+                target="_blank"
+              >
+                Jeu manquant ?
+              </a>{" "}
+              <a
+                onClick={() => setSteamImportMode(true)}
+                className="underline cursor-pointer"
+              >
+                Import Steam
+              </a>
+            </form>
+          </>
+        )}
         <form>
           {!!games.length && (
             <div>
@@ -203,7 +223,10 @@ export default function GamesNew() {
                 {games.map((game) => {
                   return (
                     <li key={game.id}>
-                      <p htmlFor={game.name}>{game.name}</p>
+                      <p htmlFor={game.name}>
+                        {game.name} ({Math.ceil(game.playtime_forever / 60)}{" "}
+                        heures de jeu)
+                      </p>
                       <ul className="pl-6">
                         {game.platforms.map((platform) => {
                           return (
@@ -233,16 +256,28 @@ export default function GamesNew() {
         {loadingCreate ? (
           <span>Chargement...</span>
         ) : (
-          <button
-            type="button"
-            disabled={!selectedGames.length}
-            className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center absolute ${
-              !selectedGames.length && "opacity-50 cursor-not-allowed"
-            }`}
-            onClick={submitGames}
-          >
-            Jeux sélectionnés
-          </button>
+          <>
+            <button
+              type="button"
+              disabled={!selectedGames.length}
+              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center absolute ${
+                !selectedGames.length && "opacity-50 cursor-not-allowed"
+              }`}
+              onClick={submitGames}
+            >
+              Jeux sélectionnés
+            </button>
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                goToNextPage();
+              }}
+              className="underline cursor-pointer"
+              style={{ marginTop: "50px" }}
+            >
+              Passer
+            </a>
+          </>
         )}
       </footer>
     </>

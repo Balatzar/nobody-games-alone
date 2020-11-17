@@ -21,10 +21,10 @@ const handler = async (req, res) => {
     const gamesData = games
       .map(
         ({ name, id, slug, cover, storyline, summary, first_release_date }) => {
-          return `('${name.replace("'", "''")}', ${id}, '${slug}', '${
+          return `('${name.replace(/'/g, "''")}', ${id}, '${slug}', '${
             cover ? cover.image_id : ""
-          }', '${storyline ? storyline.replace("'", "''") : ""}', '${
-            summary ? summary.replace("'", "''") : ""
+          }', '${storyline ? storyline.replace(/'/g, "''") : ""}', '${
+            summary ? summary.replace(/'/g, "''") : ""
           }', ${
             first_release_date
               ? `'${moment.unix(first_release_date).format("YYYY/MM/DD")}'`
@@ -35,6 +35,7 @@ const handler = async (req, res) => {
         }
       )
       .join(",");
+
     const gameNames = games
       .map(({ name }) => `'${name.replace("'", "''")}'`)
       .join(", ");
