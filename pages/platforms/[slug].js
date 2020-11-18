@@ -15,7 +15,7 @@ const colors = ["#14F74D", "#F5AA90", "#09AEE6", "#CC562F", "#B53105"];
 export async function getServerSideProps(context) {
   const fetchPlatform = await db.query(
     `
-    SELECT * FROM platforms
+    SELECT id, name, slug, abbreviation, category FROM platforms
     WHERE slug = $1
   `,
     [context.params.slug]
