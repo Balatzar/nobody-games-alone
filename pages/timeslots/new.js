@@ -42,6 +42,14 @@ export default function TimeslotsNew() {
     }
   };
 
+  const goToNextPage = () => {
+    if (router.query.go_to) {
+      router.push(router.query.go_to);
+    } else {
+      router.push("/dashboard");
+    }
+  };
+
   const submitEvents = async () => {
     setLoading(true);
     const query = {
@@ -51,11 +59,7 @@ export default function TimeslotsNew() {
 
     const res = await fetch(`/api/timeslots`, query);
     if (res.status === 200) {
-      if (router.query.go_to) {
-        router.push(router.query.go_to);
-      } else {
-        router.push("/dashboard");
-      }
+      goToNextPage();
     } else {
       setLoading(false);
       const error = await res.json();
@@ -100,16 +104,28 @@ export default function TimeslotsNew() {
         {loading ? (
           <span>Chargement...</span>
         ) : (
-          <button
-            type="button"
-            disabled={!events.length}
-            className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center absolute ${
-              !events.length && "opacity-50 cursor-not-allowed"
-            }`}
-            onClick={submitEvents}
-          >
-            Disponibilités sélectionnés
-          </button>
+          <>
+            <button
+              type="button"
+              disabled={!events.length}
+              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center absolute ${
+                !events.length && "opacity-50 cursor-not-allowed"
+              }`}
+              onClick={submitEvents}
+            >
+              Disponibilités sélectionnés
+            </button>
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                goToNextPage();
+              }}
+              className="underline cursor-pointer"
+              style={{ marginTop: "50px" }}
+            >
+              Passer
+            </a>
+          </>
         )}
       </footer>
     </>

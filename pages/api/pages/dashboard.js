@@ -17,9 +17,11 @@ const handler = async (req, res) => {
       SELECT timeslots.* FROM timeslots
       WHERE user_id = ${currentUser.id};
     `);
+
     let i = 0;
-    const fetchOtherTimeslots = await db.query(
-      `
+    const fetchOtherTimeslots = fetchTimeslots.rows.length
+      ? await db.query(
+          `
       SELECT timeslots.*, users.username FROM timeslots
       INNER JOIN users ON users.id = timeslots.user_id
       WHERE (${fetchTimeslots.rows
@@ -29,14 +31,15 @@ const handler = async (req, res) => {
           .map(({ id }) => id)
           .join(",")});
     `,
-      fetchTimeslots.rows.reduce((acc, { start_time, end_time }) => {
-        // Warning: start_time is compared to end_time and vice versa.
-        // https://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
-        acc.push(end_time);
-        acc.push(start_time);
-        return acc;
-      }, [])
-    );
+          fetchTimeslots.rows.reduce((acc, { start_time, end_time }) => {
+            // Warning: start_time is compared to end_time and vice versa.
+            // https://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
+            acc.push(end_time);
+            acc.push(start_time);
+            return acc;
+          }, [])
+        )
+      : { rows: [] };
 
     const fetchTeams = await db.query(
       `
