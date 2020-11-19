@@ -137,25 +137,39 @@ export default function IndexPage() {
         </h4>
         <ul className="list-disc pl-6">
           <li>
-            <b>Index</b>
+            <b>Landing</b>
             <ul className="list-decimal pl-6">
               <li>Présenter qui joue a quel jeu (quelques exemples)</li>
               <li>Expliquer le concept du site</li>
+              <li>
+                Mettre des elements vides pendant que la page se load pour
+                eviter de decaller le contenu
+              </li>
             </ul>
           </li>
           <li>
-            <b>Dashboard utilisateur</b>
+            <b>Page d'ajout de jeux</b>
+            <ul className="list-decimal pl-6">
+              <li>Mettre les jeux selectionnés dans des pills</li>
+            </ul>
+          </li>
+          <li>
+            <b>Teams</b>
             <ul className="list-decimal pl-6">
               <li>
-                Creation des jeux : mettre les jeux selectionnés dans des pills
+                Ajouter un{" "}
+                <a href="https://github.com/zpao/qrcode.react">QR code</a> sur
+                la page d'invitation
               </li>
             </ul>
           </li>
           <li>
             <b>Technique</b>
             <ul className="list-decimal pl-6">
+              <li>Faire une page de tchat global par team</li>
               <li>
-                IMPORTANT Refacto les queries SQL pour utiliser les parametres
+                Refacto les forms pour utiliser{" "}
+                <a href="https://formik.org/">Formik</a>
               </li>
               <li>
                 Faire une footer avec des liens vers des pages platforms et
