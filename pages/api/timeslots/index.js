@@ -2,18 +2,7 @@ const db = require("../../../db");
 import { withUser } from "../../../utils/withUser";
 
 const handler = async (req, res) => {
-  const timeslots = JSON.parse(req.body)
-    .map(({ start, end }) => {
-      return `('${start}', '${end}', ${req.currentUser.id})`;
-    })
-    .join(",");
-
-  const query = `
-    INSERT INTO timeslots (start_time, end_time, user_id)
-    VALUES
-      ${timeslots}
-    RETURNING id;
-  `;
+  const data = JSON.parse(req.body);
 
   try {
     const destroyTimeslots = await db.query(
@@ -23,7 +12,22 @@ const handler = async (req, res) => {
     `,
       [req.currentUser.id]
     );
-    const createTimeslots = await db.query(query);
+
+    let i = 0;
+    const createTimeslots = await db.query(
+      `
+      INSERT INTO timeslots (start_time, end_time, user_id)
+      VALUES
+        ${data.map(() => `($${++i}, $${++i}, $${++i})`).join()}
+      RETURNING id;
+    `,
+      data.reduce((acc, { start, end }) => {
+        acc.push(start);
+        acc.push(end);
+        acc.push(req.currentUser.id);
+        return acc;
+      }, [])
+    );
 
     res.status(200).json(createTimeslots.rows);
   } catch (error) {

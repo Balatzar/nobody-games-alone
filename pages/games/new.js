@@ -214,8 +214,11 @@ export default function GamesNew() {
                   return (
                     <li key={game.id}>
                       <p htmlFor={game.name}>
-                        {game.name} ({Math.ceil(game.playtime_forever / 60)}{" "}
-                        heures de jeu)
+                        {game.name}{" "}
+                        {steamImportMode &&
+                          `(${Math.ceil(
+                            game.playtime_forever / 60
+                          )} heures de jeu)`}
                       </p>
                       <ul className="pl-6">
                         {game.platforms.map((platform) => {

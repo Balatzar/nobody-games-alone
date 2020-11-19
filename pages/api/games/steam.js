@@ -44,8 +44,6 @@ export default async function search(req, res) {
       idgbData = idgbData.concat(data);
     }
 
-    console.log(idgbData.length);
-
     res.status(200).json({
       games: idgbData
         .map((website) => {

@@ -10,7 +10,6 @@ const withUser = (handler) => async (req, res) => {
       [temp_token]
     );
     const user = response.rows[0];
-    console.log(user);
     req.currentUser = user;
   }
   return handler(req, res);

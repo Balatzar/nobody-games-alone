@@ -39,7 +39,6 @@ export async function getServerSideProps(context) {
       currentGame,
     },
   };
-  console.log(data.props);
   return data;
 }
 

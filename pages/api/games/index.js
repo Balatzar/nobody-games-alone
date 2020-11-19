@@ -18,68 +18,81 @@ const handler = async (req, res) => {
   ).data;
 
   try {
-    const gamesData = games
-      .map(
-        ({ name, id, slug, cover, storyline, summary, first_release_date }) => {
-          return `('${name.replace(/'/g, "''")}', ${id}, '${slug}', '${
-            cover ? cover.image_id : ""
-          }', '${storyline ? storyline.replace(/'/g, "''") : ""}', '${
-            summary ? summary.replace(/'/g, "''") : ""
-          }', ${
-            first_release_date
-              ? `'${moment.unix(first_release_date).format("YYYY/MM/DD")}'`
-              : "null"
-          }, ${cover ? cover.width : "null"}, ${
-            cover ? cover.height : "null"
-          })`;
-        }
-      )
-      .join(",");
-
-    const gameNames = games
-      .map(({ name }) => `'${name.replace("'", "''")}'`)
-      .join(", ");
-
+    let i = 0;
     const gamesQuery = `
       WITH new_games AS(
         INSERT INTO games (name, igdb_id, slug, cover_image_id, storyline, summary, first_release_date, cover_width, cover_height)
           VALUES
-            ${gamesData}
+            ${games
+              .map(
+                () =>
+                  `($${++i}, $${++i}, $${++i}, $${++i}, $${++i}, $${++i}, $${++i}, $${++i}, $${++i})`
+              )
+              .join()}
         ON CONFLICT ON CONSTRAINT games_name_key DO NOTHING
         RETURNING id, igdb_id
       )
       SELECT * from new_games
       UNION
-        SELECT id, igdb_id FROM games WHERE name in (${gameNames});
+        SELECT id, igdb_id FROM games WHERE name in (${games
+          .map(() => `$${++i}`)
+          .join()});
     `;
-    const gamesResponse = await db.query(gamesQuery);
+    const gamesResponse = await db.query(
+      gamesQuery,
+      games
+        .reduce(
+          (
+            acc,
+            { name, id, slug, cover, storyline, summary, first_release_date }
+          ) => {
+            acc.push(name);
+            acc.push(id);
+            acc.push(slug);
+            acc.push(cover.image_id);
+            acc.push(storyline);
+            acc.push(summary);
+            acc.push(moment.unix(first_release_date).format("YYYY/MM/DD"));
+            acc.push(cover.width);
+            acc.push(cover.height);
+            return acc;
+          },
+          []
+        )
+        .concat(games.map(({ name }) => name))
+    );
     const gameDbData = gamesResponse.rows;
 
-    const platformsData = platformsToCreate
-      .map(({ name, id, abbreviation, category, slug }) => {
-        return `('${name.replace("'", "''")}', ${id}, '${abbreviation.replace(
-          "'",
-          "''"
-        )}', ${category}, '${slug}')`;
-      })
-      .join(",");
-    const platformNames = platformsToCreate
-      .map(({ name }) => `'${name.replace("'", "''")}'`)
-      .join(", ");
-
+    i = 0;
     const platformsQuery = `
       WITH new_platforms AS(
         INSERT INTO platforms (name, igdb_id, abbreviation, category, slug)
           VALUES
-            ${platformsData}
+            ${platformsToCreate
+              .map(() => `($${++i}, $${++i}, $${++i}, $${++i}, $${++i})`)
+              .join()}
         ON CONFLICT ON CONSTRAINT platforms_name_key DO NOTHING
         RETURNING id, igdb_id
       )
       SELECT * from new_platforms
       UNION
-        SELECT id, igdb_id FROM platforms WHERE name in (${platformNames});
+        SELECT id, igdb_id FROM platforms WHERE name in (${platformsToCreate
+          .map(() => `$${++i}`)
+          .join()});
     `;
-    const platformsResponse = await db.query(platformsQuery);
+    const platformsResponse = await db.query(
+      platformsQuery,
+      platformsToCreate
+        .reduce((acc, { name, id, abbreviation, category, slug }) => {
+          acc.push(name);
+          acc.push(id);
+          acc.push(abbreviation);
+          acc.push(category);
+          acc.push(slug);
+          return acc;
+        }, [])
+        .concat(platformsToCreate.map(({ name }) => name))
+    );
     const platformsDbData = platformsResponse.rows;
 
     const joinTableData = games.reduce((acc, game) => {
@@ -90,18 +103,30 @@ const handler = async (req, res) => {
         ).id;
         const gameDbId = gameDbData.find(({ igdb_id }) => igdb_id == game.id)
           .id;
-        acc.push(`(${gameDbId}, ${req.currentUser.id}, ${platformDbId})`);
+        acc.push({
+          gameId: gameDbId,
+          userId: req.currentUser.id,
+          platformId: platformDbId,
+        });
       });
       return acc;
     }, []);
-    console.log(joinTableData);
 
+    i = 0;
     const gameUserQuery = `
         INSERT INTO games_users_platforms (game_id, user_id, platform_id)
         VALUES
-          ${joinTableData.join(",")};
+          ${joinTableData.map(() => `($${++i}, $${++i}, $${++i})`).join()};
     `;
-    const gameUserResponse = await db.query(gameUserQuery);
+    const gameUserResponse = await db.query(
+      gameUserQuery,
+      joinTableData.reduce((acc, { gameId, userId, platformId }) => {
+        acc.push(gameId);
+        acc.push(userId);
+        acc.push(platformId);
+        return acc;
+      }, [])
+    );
 
     res.status(200).json(JSON.stringify({ message: "All objects created" }));
   } catch (error) {

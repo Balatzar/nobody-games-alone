@@ -38,7 +38,6 @@ export async function getServerSideProps(context) {
       currentPlatform,
     },
   };
-  console.log(data.props);
   return data;
 }
 

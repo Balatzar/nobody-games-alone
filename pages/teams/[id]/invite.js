@@ -20,7 +20,6 @@ export async function getServerSideProps(context) {
       currentTeam,
     },
   };
-  console.log(data.props);
   return data;
 }
 

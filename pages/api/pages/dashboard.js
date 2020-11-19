@@ -6,17 +6,23 @@ const handler = async (req, res) => {
   try {
     const { currentUser } = req;
 
-    const fetchGames = await db.query(`
+    const fetchGames = await db.query(
+      `
       SELECT DISTINCT games.*, platforms.abbreviation as platforms FROM games
       INNER JOIN games_users_platforms ON games_users_platforms.game_id = games.id
       INNER JOIN users ON users.id = games_users_platforms.user_id
       INNER JOIN platforms ON platforms.id = games_users_platforms.platform_id
-      WHERE users.id = ${currentUser.id};
-    `);
-    const fetchTimeslots = await db.query(`
+      WHERE users.id = $1;
+    `,
+      [currentUser.id]
+    );
+    const fetchTimeslots = await db.query(
+      `
       SELECT timeslots.* FROM timeslots
-      WHERE user_id = ${currentUser.id};
-    `);
+      WHERE user_id = $1;
+    `,
+      [currentUser.id]
+    );
 
     let i = 0;
     const fetchOtherTimeslots = fetchTimeslots.rows.length

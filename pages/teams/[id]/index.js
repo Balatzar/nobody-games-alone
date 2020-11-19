@@ -21,7 +21,6 @@ export async function getServerSideProps(context) {
   `,
     [context.params.id]
   );
-  console.log(fetchTeam.rows);
 
   return {
     props: {
@@ -36,7 +35,6 @@ export default function TeamsShow({ currentTeam }) {
   if (error) {
     console.warn(error);
   }
-  console.log(data);
 
   const users = data ? data.users : [];
   const timeslots = data ? data.timeslots : [];
