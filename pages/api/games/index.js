@@ -52,7 +52,11 @@ const handler = async (req, res) => {
             acc.push(cover.image_id);
             acc.push(storyline);
             acc.push(summary);
-            acc.push(moment.unix(first_release_date).format("YYYY/MM/DD"));
+            acc.push(
+              first_release_date
+                ? moment.unix(first_release_date).format("YYYY/MM/DD")
+                : null
+            );
             acc.push(cover.width);
             acc.push(cover.height);
             return acc;
