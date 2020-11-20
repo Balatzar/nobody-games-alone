@@ -143,7 +143,7 @@ export default function IndexPage() {
               <li>Expliquer le concept du site</li>
               <li>
                 Mettre des elements vides pendant que la page se load pour
-                eviter de decaller le contenu
+                eviter de decaller le contenu.
               </li>
             </ul>
           </li>
