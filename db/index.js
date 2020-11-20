@@ -8,11 +8,11 @@ const config = process.env.PGUSER
   : {};
 const pool = new Pool(config);
 module.exports = {
-  query: (text, params) => {
+  async query(text, params) {
     console.log(text);
     console.log(params);
     const start = Date.now();
-    const res = pool.query(text, params);
+    const res = await pool.query(text, params);
     console.log(`Query duration: ${Date.now() - start}ms`);
     return res;
   },
