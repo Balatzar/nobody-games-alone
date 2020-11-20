@@ -154,6 +154,24 @@ export default function IndexPage() {
             </ul>
           </li>
           <li>
+            <b>Tchat</b>
+            <ul className="list-decimal pl-6">
+              <li>
+                Verifier que l'utilisateur a les droits de creation de message
+                (pour lui et pour team)
+              </li>
+              <li>
+                Refacto le composant de tchat pour etre independant (avec sa
+                propre API)
+              </li>
+              <li>Mettre un tchat sur les DM</li>
+              <li>
+                Diffuser des notification / envoyer des mails quand il y a des
+                nouveaux messages a lire
+              </li>
+            </ul>
+          </li>
+          <li>
             <b>Teams</b>
             <ul className="list-decimal pl-6">
               <li>
