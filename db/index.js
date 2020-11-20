@@ -11,6 +11,9 @@ module.exports = {
   query: (text, params) => {
     console.log(text);
     console.log(params);
-    return pool.query(text, params);
+    const start = Date.now();
+    const res = pool.query(text, params);
+    console.log(`Query duration: ${Date.now() - start}ms`);
+    return res;
   },
 };
