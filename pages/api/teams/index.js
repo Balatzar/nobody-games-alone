@@ -2,17 +2,16 @@ const db = require("../../../db");
 import { withUser } from "../../../utils/withUser";
 
 const handler = async (req, res) => {
-  const query = `
-    INSERT INTO teams (creator_id, name)
-    VALUES
-      ($1, $2)
-    RETURNING id;
-  `;
   try {
-    const createTeam = await db.query(query, [
-      req.currentUser.id,
-      JSON.parse(req.body).name,
-    ]);
+    const createTeam = await db.query(
+      `
+      INSERT INTO teams (creator_id, name)
+      VALUES
+        ($1, $2)
+      RETURNING id;
+    `,
+      [req.currentUser.id, JSON.parse(req.body).name]
+    );
 
     const team = createTeam.rows[0];
 

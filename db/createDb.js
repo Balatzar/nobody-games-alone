@@ -10,6 +10,7 @@ const moment = require("moment");
     DROP TABLE IF EXISTS teams_users;
     DROP TABLE IF EXISTS games;
     DROP TABLE IF EXISTS timeslots;
+    DROP TABLE IF EXISTS messages;
     DROP TABLE IF EXISTS teams;
     DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS platforms;
@@ -95,6 +96,19 @@ const moment = require("moment");
       CONSTRAINT fk_user
         FOREIGN KEY(user_id)
           REFERENCES users(id)
+    );
+
+    CREATE TABLE messages (
+      body VARCHAR NOT NULL,
+      user_id INT,
+      team_id INT,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      CONSTRAINT fk_user
+        FOREIGN KEY(user_id)
+          REFERENCES users(id),
+      CONSTRAINT fk_team
+        FOREIGN KEY(team_id)
+          REFERENCES teams(id)
     );
 
 

@@ -8,7 +8,7 @@ const db = require("../../../db");
 export async function getServerSideProps(context) {
   const fetchTeam = await db.query(
     `
-    SELECT teams.* FROM teams
+    SELECT name, invite_token FROM teams
     WHERE id = $1;
   `,
     [context.params.id]

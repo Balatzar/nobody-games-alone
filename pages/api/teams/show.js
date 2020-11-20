@@ -26,10 +26,21 @@ const handler = async (req, res) => {
       [teamId]
     );
 
+    const fetchMessages = await db.query(
+      `
+      SELECT messages.body, users.username FROM messages
+      INNER JOIN users ON users.id = messages.user_id
+      WHERE messages.team_id = $1
+      ORDER BY messages.created_at ASC
+    `,
+      [teamId]
+    );
+
     res.status(200).json({
       timeslots: fetchTimeslots.rows,
       users: fetchUsers.rows,
       currentUser: req.currentUser,
+      messages: fetchMessages.rows,
     });
   } catch (error) {
     console.warn(error);
