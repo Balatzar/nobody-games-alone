@@ -179,6 +179,9 @@ export default function IndexPage() {
                 <a href="https://github.com/zpao/qrcode.react">QR code</a> sur
                 la page d'invitation
               </li>
+              <li>
+                Ajouter un système de créneaux entre joueurs d'une team, avec reminder mail/sms
+              </li>
             </ul>
           </li>
           <li>
