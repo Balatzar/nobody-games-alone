@@ -1,3 +1,4 @@
+import Layout from "../components/layout";
 import Nav from "../components/nav";
 import Link from "next/link";
 import Head from "next/head";
@@ -14,7 +15,7 @@ export default function IndexPage() {
   const games = data ? data.games : [];
 
   return (
-    <div>
+    <Layout>
       <Head>
         <title>Nobody Games Alone</title>
       </Head>
@@ -228,6 +229,6 @@ export default function IndexPage() {
           </li>
         </ul>
       </div>
-    </div>
+    </Layout>
   );
 }
