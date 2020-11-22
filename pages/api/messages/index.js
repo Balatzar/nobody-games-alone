@@ -3,19 +3,33 @@ import { withUser } from "../../../utils/withUser";
 
 const handler = async (req, res) => {
   try {
-    const { message, teamId } = JSON.parse(req.body);
+    const { message, teamId, groupId } = JSON.parse(req.body);
 
-    const createTeam = await db.query(
-      `
-      INSERT INTO messages (body, user_id, team_id)
-      VALUES
-        ($1, $2, $3)
-      RETURNING body;
-    `,
-      [message, req.currentUser.id, teamId]
-    );
+    let createMessage;
 
-    const createdMessage = createTeam.rows[0];
+    if (teamId) {
+      createMessage = await db.query(
+        `
+        INSERT INTO messages (body, user_id, team_id)
+        VALUES
+          ($1, $2, $3)
+        RETURNING body;
+      `,
+        [message, req.currentUser.id, teamId]
+      );
+    } else {
+      createMessage = await db.query(
+        `
+        INSERT INTO messages (body, user_id, group_id)
+        VALUES
+          ($1, $2, $3)
+        RETURNING body;
+      `,
+        [message, req.currentUser.id, groupId]
+      );
+    }
+
+    const createdMessage = createMessage.rows[0];
 
     res.status(200).json(createdMessage);
   } catch (error) {

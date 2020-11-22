@@ -1,8 +1,15 @@
 import { useState } from "react";
 import useSWR, { mutate } from "swr";
 
-export default function TalkBox({ currentTeam, users, currentUser }) {
-  const dataUrl = `/api/messages/team?id=${currentTeam.id}`;
+export default function TalkBox({
+  currentTeam,
+  users,
+  currentUser,
+  currentGroup,
+}) {
+  const dataUrl = currentTeam
+    ? `/api/messages/team?id=${currentTeam.id}`
+    : `/api/messages/group?id=${currentGroup.id}`;
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const { data, error } = useSWR(dataUrl, {
@@ -16,9 +23,13 @@ export default function TalkBox({ currentTeam, users, currentUser }) {
     if (!message) return;
     setLoading(true);
 
+    const body = currentTeam
+      ? { message, teamId: currentTeam.id }
+      : { message, groupId: currentGroup.id };
+
     const query = {
       method: "POST",
-      body: JSON.stringify({ message, teamId: currentTeam.id }),
+      body: JSON.stringify(body),
     };
 
     const res = await fetch(`/api/messages`, query);

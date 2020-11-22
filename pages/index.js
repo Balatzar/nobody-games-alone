@@ -228,6 +228,17 @@ export default function IndexPage() {
               </li>
             </ul>
           </li>
+          <li>
+            <b>Gestion de projet</b>
+            <ul className="list-decimal pl-6">
+              <li>Bouger tous les tickets vers un trello</li>
+              <li>
+                Ajouter dans la footer un lien pour rapporter un bogue et un
+                lien pour envoyer des idées (airtable)
+              </li>
+              <li>Créer un discord pour gerer le projet</li>
+            </ul>
+          </li>
         </ul>
       </div>
     </Layout>

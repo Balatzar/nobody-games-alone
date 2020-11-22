@@ -20,7 +20,7 @@ export default async function index(req, res) {
         `
         INSERT INTO teams_users (team_id, user_id)
         VALUES ((SELECT teams.id FROM teams
-          WHERE teams.invite_token = $1), $2)
+          WHERE teams.invite_token = $1), $2);
       `,
         [invite, user.id]
       );
