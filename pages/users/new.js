@@ -1,3 +1,4 @@
+import Layout from "../../components/layout";
 import Nav from "../../components/nav";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -44,7 +45,7 @@ export default function UserNew() {
   }
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>Créer un utilisateur - Nobody Games Alone</title>
       </Head>
@@ -89,6 +90,6 @@ export default function UserNew() {
           )}
         </form>
       </div>
-    </>
+    </Layout>
   );
 }

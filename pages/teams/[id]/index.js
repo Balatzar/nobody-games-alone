@@ -1,4 +1,5 @@
 const db = require("../../../db");
+import Layout from "../../../components/layout";
 import Nav from "../../../components/nav";
 import TalkBox from "../../../components/talkBox";
 import { Calendar, momentLocalizer, Views } from "react-big-calendar";
@@ -54,7 +55,7 @@ export default function TeamsShow({ currentTeam }) {
   const events = prepareTimeslots(timeslots, "", true);
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>{currentTeam.name} - Nobody Games Alone</title>
       </Head>
@@ -126,6 +127,6 @@ export default function TeamsShow({ currentTeam }) {
           </TabPanel>
         </Tabs>
       </div>
-    </>
+    </Layout>
   );
 }

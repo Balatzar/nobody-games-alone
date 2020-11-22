@@ -1,3 +1,4 @@
+import Layout from "../../../../components/layout";
 import Nav from "../../../../components/nav";
 import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
@@ -34,7 +35,7 @@ export default function Dashboard() {
   const events = prepareTimeslots(timeslots, "", true);
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>Dashboard - Nobody Games Alone</title>
       </Head>
@@ -110,6 +111,6 @@ export default function Dashboard() {
           <p>Chargement...</p>
         )}
       </div>
-    </>
+    </Layout>
   );
 }

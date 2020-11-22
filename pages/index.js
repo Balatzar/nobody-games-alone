@@ -181,7 +181,8 @@ export default function IndexPage() {
                 la page d'invitation
               </li>
               <li>
-                Ajouter un système de créneaux entre joueurs d'une team, avec reminder mail/sms
+                Ajouter un système de créneaux entre joueurs d'une team, avec
+                reminder mail/sms
               </li>
             </ul>
           </li>

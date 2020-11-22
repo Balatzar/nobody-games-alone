@@ -1,5 +1,6 @@
 import { parseCookies, setCookie } from "nookies";
 import Head from "next/head";
+import Layout from "../../components/layout";
 import Nav from "../../components/nav";
 import { useEffect, useState } from "react";
 
@@ -11,7 +12,7 @@ export default function UsersMigrate() {
   }, []);
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>Migration de compte - Nobody Games Alone</title>
       </Head>
@@ -43,6 +44,6 @@ export default function UsersMigrate() {
           </label>
         </div>
       </div>
-    </>
+    </Layout>
   );
 }

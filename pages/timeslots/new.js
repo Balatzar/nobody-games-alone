@@ -1,3 +1,4 @@
+import Layout from "../../components/layout";
 import Nav from "../../components/nav";
 import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
@@ -68,7 +69,7 @@ export default function TimeslotsNew() {
   };
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>Ajouter des disponibilités - Nobody Games Alone</title>
       </Head>
@@ -128,6 +129,6 @@ export default function TimeslotsNew() {
           </>
         )}
       </footer>
-    </>
+    </Layout>
   );
 }
