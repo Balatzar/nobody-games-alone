@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from 'next/image'
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import useSwr from "swr";
 
@@ -7,7 +7,7 @@ export default function Nav({ title }) {
   const { data, error } = useSwr(`/api/users/informations`);
 
   return (
-    <nav class="border-b border-pink-DEFAULT">
+    <nav className="border-b border-pink-DEFAULT">
       <ul className="flex justify-between items-center p-8">
         <li>
           <Link href="/">
