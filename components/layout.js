@@ -1,3 +1,3 @@
 export default function Layout({ children }) {
-    return <section class="bg-purple-DEFAULT">{children}</section>
+  return <section className="bg-purple-DEFAULT">{children}</section>;
 }

@@ -1,4 +1,7 @@
+const db = require("../../../db");
+import Layout from "../../../components/layout";
 import Nav from "../../../components/nav";
+import TalkBox from "../../../components/talkBox";
 import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -7,7 +10,6 @@ import useSWR, { mutate } from "swr";
 import Link from "next/link";
 import { prepareTimeslots } from "../../../utils/helpers";
 import { useRouter } from "next/router";
-const db = require("../../../db");
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useState } from "react";
@@ -34,11 +36,7 @@ export async function getServerSideProps(context) {
 
 export default function TeamsShow({ currentTeam }) {
   const router = useRouter();
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { data, error } = useSWR(`/api/teams/show?id=${currentTeam.id}`, {
-    refreshInterval: 5000,
-  });
+  const { data, error } = useSWR(`/api/teams/show?id=${currentTeam.id}`);
   if (error) {
     console.warn(error);
   }
@@ -46,7 +44,6 @@ export default function TeamsShow({ currentTeam }) {
   const users = data ? data.users : [];
   const timeslots = data ? data.timeslots : [];
   const currentUser = data ? data.currentUser : null;
-  const messages = data ? data.messages : null;
 
   const usernameColors = timeslots.reduce((acc, { username }) => {
     if (!acc[username]) {
@@ -57,31 +54,8 @@ export default function TeamsShow({ currentTeam }) {
 
   const events = prepareTimeslots(timeslots, "", true);
 
-  const saveMessage = async (e) => {
-    e.preventDefault();
-    if (!message) return;
-    setLoading(true);
-
-    const query = {
-      method: "POST",
-      body: JSON.stringify({ message, teamId: currentTeam.id }),
-    };
-
-    const res = await fetch(`/api/messages`, query);
-    const data = await res.json();
-
-    setLoading(false);
-
-    if (res.status === 200) {
-      setMessage("");
-      mutate(`/api/teams/show?id=${currentTeam.id}`);
-    } else {
-      console.warn(data);
-    }
-  };
-
   return (
-    <>
+    <Layout>
       <Head>
         <title>{currentTeam.name} - Nobody Games Alone</title>
       </Head>
@@ -141,45 +115,11 @@ export default function TeamsShow({ currentTeam }) {
           <TabPanel>
             {data ? (
               <>
-                <div className="flex">
-                  <div className="w-1/6">
-                    <ul>
-                      {users.map(({ username }) => {
-                        return <li key={username}>{username}</li>;
-                      })}
-                    </ul>
-                  </div>
-                  <div className="w-5/6">
-                    <ul>
-                      {messages.map((message) => {
-                        return (
-                          <li>
-                            <b>{message.username} : </b>
-                            {message.body}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                    <form onSubmit={saveMessage}>
-                      {loading ? (
-                        <p>Chargement...</p>
-                      ) : (
-                        <>
-                          <input
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                          />
-                          <button
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center"
-                            type="submit"
-                          >
-                            Envoyer
-                          </button>
-                        </>
-                      )}
-                    </form>
-                  </div>
-                </div>
+                <TalkBox
+                  currentTeam={currentTeam}
+                  users={users}
+                  currentUser={currentUser}
+                />
               </>
             ) : (
               <p>Chargement...</p>
@@ -187,6 +127,6 @@ export default function TeamsShow({ currentTeam }) {
           </TabPanel>
         </Tabs>
       </div>
-    </>
+    </Layout>
   );
 }

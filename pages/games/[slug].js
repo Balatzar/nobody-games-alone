@@ -1,3 +1,4 @@
+import Layout from "../../components/layout";
 import Nav from "../../components/nav";
 const db = require("../../db");
 import { Calendar, momentLocalizer, Views } from "react-big-calendar";
@@ -58,7 +59,7 @@ export default function GamesShow({ platforms, currentGame }) {
     return acc;
   }, {});
   return (
-    <>
+    <Layout>
       <Head>
         <title>{currentGame.name} - Nobody Games Alone</title>
         <meta name="description" content={currentGame.summary} />
@@ -150,6 +151,6 @@ export default function GamesShow({ platforms, currentGame }) {
           }}
         />
       </div>
-    </>
+    </Layout>
   );
 }

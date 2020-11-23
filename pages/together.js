@@ -1,3 +1,4 @@
+import Layout from "../components/layout";
 import Nav from "../components/nav";
 import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
@@ -36,7 +37,7 @@ export default function Together() {
   );
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>Jouons ensemble - Nobody Games Alone</title>
       </Head>
@@ -85,6 +86,6 @@ export default function Together() {
           <p>Chargement...</p>
         )}
       </div>
-    </>
+    </Layout>
   );
 }

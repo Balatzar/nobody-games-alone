@@ -1,3 +1,4 @@
+import Layout from "../../../components/layout";
 import Nav from "../../../components/nav";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -50,7 +51,7 @@ export default function TimeslotsInvite({ currentTeam }) {
   };
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>Inviter des amis - Nobody Games Alone</title>
       </Head>
@@ -129,6 +130,6 @@ export default function TimeslotsInvite({ currentTeam }) {
           </span>
         </p>
       </footer>
-    </>
+    </Layout>
   );
 }

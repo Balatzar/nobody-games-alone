@@ -181,7 +181,8 @@ export default function IndexPage() {
                 la page d'invitation
               </li>
               <li>
-                Ajouter un système de créneaux entre joueurs d'une team, avec reminder mail/sms
+                Ajouter un système de créneaux entre joueurs d'une team, avec
+                reminder mail/sms
               </li>
             </ul>
           </li>
@@ -225,6 +226,17 @@ export default function IndexPage() {
                 Mettre en place un systeme d'error reporting sur le serveur et
                 les clients
               </li>
+            </ul>
+          </li>
+          <li>
+            <b>Gestion de projet</b>
+            <ul className="list-decimal pl-6">
+              <li>Bouger tous les tickets vers un trello</li>
+              <li>
+                Ajouter dans la footer un lien pour rapporter un bogue et un
+                lien pour envoyer des idées (airtable)
+              </li>
+              <li>Créer un discord pour gerer le projet</li>
             </ul>
           </li>
         </ul>
