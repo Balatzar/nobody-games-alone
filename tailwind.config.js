@@ -39,7 +39,11 @@ module.exports = {
       },
       borderRadius: {
         '4xl': '2rem',
-      }
+      },
+      fontFamily: {
+        sans: ['"Montserrat"','"Verdana"'],
+        cursive: ['"Press Start 2P"','"Garamond"'],
+      },
     }
   }
 }
