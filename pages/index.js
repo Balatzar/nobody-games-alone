@@ -239,6 +239,15 @@ export default function IndexPage() {
               <li>Créer un discord pour gerer le projet</li>
             </ul>
           </li>
+          <li>
+            <b>Admin</b>
+            <ul className="list-decimal pl-6">
+              <li>
+                Apres avoir mis en place des comptes mettre en place un tableau
+                admin avec tous les users et d'autres data
+              </li>
+            </ul>
+          </li>
         </ul>
       </div>
     </Layout>
