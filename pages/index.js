@@ -60,20 +60,17 @@ export default function IndexPage() {
         <h2 className="text-3xl text-center text-accent-1">
           Nos utilisateurs jouent sur...
         </h2>
-        <div className="p-6 flex flex-wrap space-x-4">
+        <div className="flex flex-wrap space-x-4 py-8">
           {platforms ? (
             platforms.map((platform) => {
               return (
                 <div
                   key={platform.id}
-                  className="card"
-                  style={{
-                    width: "300px",
-                  }}
+                  className="card flex-1"
                 >
                   <div className="px-6 py-4">
                     <Link href={`/platforms/${platform.slug}`}>
-                      <div className="font-bold text-xl mb-2 text-center underline cursor-pointer">
+                      <div className="font-cursive font-bold text-xl mb-2 text-center cursor-pointer">
                         <a>{platform.name}</a>
                       </div>
                     </Link>
@@ -85,7 +82,7 @@ export default function IndexPage() {
                           key={`${platform.id}-${game.id}`}
                           href={`/games/${game.slug}`}
                         >
-                          <a className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 text-center cursor-pointer">
+                          <a className="inline-block text-center cursor-pointer">
                             {game.name}
                           </a>
                         </Link>
@@ -93,9 +90,7 @@ export default function IndexPage() {
                     })}
                     {platform.games.length > 3 && (
                       <Link href={`/platforms/${platform.slug}`}>
-                        <div className="text-center underline cursor-pointer">
-                          <a>Plus de jeux</a>
-                        </div>
+                        <a className="btn small w-full">Plus de jeux</a>
                       </Link>
                     )}
                   </div>
@@ -109,13 +104,13 @@ export default function IndexPage() {
         <h2 className="text-3xl text-center text-accent-1">
           Nos utilisateurs jouent à...
         </h2>
-        <div className="p-5 flex flex-wrap space-x-4">
+        <div className="flex flex-wrap space-x-4 py-8">
           {games ? (
             games.map((game) => {
               return (
                 <Link key={game.id} href={`/games/${game.slug}`}>
-                  <a>
-                    <div className="card">
+                  <a className="card flex-1">
+                    <div className="">
                       <Image
                         src={`https://images.igdb.com/igdb/image/upload/t_1080p/${game.cover_image_id}.jpg`}
                         width={game.cover_width}
