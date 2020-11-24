@@ -20,8 +20,8 @@ export default function IndexPage() {
         <title>Nobody Games Alone</title>
       </Head>
       <Nav />
-      <div className="container mx-auto">
-        <div className="container grid grid-cols-2 gap-4 items-center">
+      <div className="container mx-auto page">
+        <div className="grid grid-cols-2 gap-4 items-center">
           <div className="illu">
             <Image
               src="/illu-landing.png"
@@ -50,11 +50,29 @@ export default function IndexPage() {
             </div>
           </div>
           <div className="justify-center pt-4 flex">
-            <Link href="/together">
-              <a className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-center">
-                Explorer
-              </a>
-            </Link>
+          </div>
+        </div>
+        <div className="container-sm mx-auto grid grid grid-cols-2 gap-4 items-center">
+          <div clasName="text">
+            <h3 className="text-2xl text-right">
+              Un petit tour d'horizon avant de se lancer ?
+            </h3>
+            <div className="justify-center pt-4 grid grid-cols-2 gap-4">
+              <p>&nbsp;</p>
+              <Link href="/together">
+                <a className="btn bg-blue-DEFAULT text-purple-DEFAULT">
+                  Explorer
+                </a>
+              </Link>
+            </div>
+          </div>
+          <div className="illu">
+            <Image
+              src="/explore.png"
+              alt="Nobody Games Alone illustration"
+              width={"1000"}
+              height={"900"}
+            />
           </div>
         </div>
         <h2 className="text-3xl text-center text-accent-1">
@@ -109,26 +127,14 @@ export default function IndexPage() {
             games.map((game) => {
               return (
                 <Link key={game.id} href={`/games/${game.slug}`}>
-                  <a className="card flex-1">
-                    <div className="">
-                      <Image
-                        src={`https://images.igdb.com/igdb/image/upload/t_1080p/${game.cover_image_id}.jpg`}
-                        width={game.cover_width}
-                        height={game.cover_height}
-                        className="w-full"
-                      />
-                      <div className="px-6 py-4">
-                        <div className="font-bold text-xl mb-2">
-                          {game.name}
-                        </div>
-                        <p className="text-gray-700 text-base">
-                          {game.summary.length > 100
-                            ? `${game.summary.slice(0, 100)}...`
-                            : game.summary}
-                        </p>
-                      </div>
-                    </div>
-                  </a>
+                  <div className="card flex-none md:flex-1">
+                    <Image
+                      src={`https://images.igdb.com/igdb/image/upload/t_1080p/${game.cover_image_id}.jpg`}
+                      width={game.cover_width}
+                      height={game.cover_height}
+                      className="w-full"
+                    />
+                  </div>
                 </Link>
               );
             })
@@ -136,6 +142,7 @@ export default function IndexPage() {
             <p>Chargement...</p>
           )}
         </div>
+        
         <div className="container p-20">
           <h4 className="text-center underline">
             Ce qui doit etre mis en place :
