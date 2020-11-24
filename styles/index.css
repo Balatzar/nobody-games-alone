@@ -1,9 +1,12 @@
 @tailwind base;
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;1,400&family=Press+Start+2P&display=swap');
-
+@import "base.css";
+@import "components/card";
+@import "components/button";
+@import "components/navbar";
 
 /* Write your own custom base styles here */
-*{color:#fff};
+
 /* Start purging... */
 @tailwind components;
 
@@ -11,27 +14,7 @@
 /* Stop purging. */
 
 /* Write your own custom component styles here */
-.btn{
-    @apply bg-pink-DEFAULT p-4 text-center shadow-sm transition duration-100 ease-in-out transform ;
-}
-.btn:hover{
-    @apply shadow-lg -translate-y-1;
-}
-.btn:active{
-    @apply shadow-sm translate-y-0;
-}
-.card{
-    @apply max-w-sm rounded overflow-hidden shadow-sm cursor-pointer bg-white-DEFAULT transition duration-100 ease-in-out transform ;
-}
-.card:hover{
-    @apply shadow-lg -translate-y-1;
-}
-.card *{
-    @apply text-purple-DEFAULT;
-}
-.navbar{
-    @apply border-b border-pink-DEFAULT fixed w-full z-50 bg-purple-DEFAULT;
-}
+
 /* Start purging... */
 @tailwind utilities;
 /* Stop purging. */
