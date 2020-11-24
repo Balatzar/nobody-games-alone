@@ -26,8 +26,8 @@ export default function IndexPage() {
             <Image
               src="/illu-landing.png"
               alt="Nobody Games Alone illustration"
-              width={'1000'}
-              height={'1000'}
+              width={"1000"}
+              height={"1000"}
             />
           </div>
           <div className="hero">
@@ -40,15 +40,11 @@ export default function IndexPage() {
             <div className="justify-center pt-4 grid grid-cols-2 gap-4">
               {data && data.currentUser && data.currentUser.username ? (
                 <Link href="/dashboard">
-                  <a className="btn">
-                    Ma dashboard
-                  </a>
+                  <a className="btn">Ma dashboard</a>
                 </Link>
               ) : (
                 <Link href="/users/new">
-                  <a className="btn">
-                    C'est parti !
-                  </a>
+                  <a className="btn">C'est parti !</a>
                 </Link>
               )}
             </div>
@@ -122,7 +118,9 @@ export default function IndexPage() {
                         className="w-full"
                       />
                       <div className="px-6 py-4">
-                        <div className="font-bold text-xl mb-2">{game.name}</div>
+                        <div className="font-bold text-xl mb-2">
+                          {game.name}
+                        </div>
                         <p className="text-gray-700 text-base">
                           {game.summary.length > 100
                             ? `${game.summary.slice(0, 100)}...`
@@ -206,8 +204,8 @@ export default function IndexPage() {
                 </li>
                 <li>
                   Refactor la creation des disponibilités pour supprimer
-                  uniquement via diff et mettre en place un index sur start et end
-                  pour l'unicité
+                  uniquement via diff et mettre en place un index sur start et
+                  end pour l'unicité
                 </li>
               </ul>
             </li>
@@ -215,8 +213,8 @@ export default function IndexPage() {
               <b>A venir</b>
               <ul className="list-decimal pl-6">
                 <li>
-                  Mettre en place les meta tags pour les previews de partage (page
-                  landing - together - platform show)
+                  Mettre en place les meta tags pour les previews de partage
+                  (page landing - together - platform show)
                 </li>
                 <li>
                   Voir a l'utilisation s'il faut prioriser la mise en page d'une
@@ -243,6 +241,15 @@ export default function IndexPage() {
                   lien pour envoyer des idées (airtable)
                 </li>
                 <li>Créer un discord pour gerer le projet</li>
+              </ul>
+            </li>
+            <li>
+              <b>Admin</b>
+              <ul className="list-decimal pl-6">
+                <li>
+                  Apres avoir mis en place des comptes mettre en place un
+                  tableau admin avec tous les users et d'autres data
+                </li>
               </ul>
             </li>
           </ul>
