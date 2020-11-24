@@ -20,7 +20,7 @@ export default function IndexPage() {
         <title>Nobody Games Alone</title>
       </Head>
       <Nav />
-      <div className="container mx-auto">
+      <div className="container  mx-auto">
         <div className="container grid grid-cols-2 gap-4 items-center">
           <div className="illu">
             <Image
@@ -64,10 +64,7 @@ export default function IndexPage() {
           {platforms ? (
             platforms.map((platform) => {
               return (
-                <div
-                  key={platform.id}
-                  className="card flex-1"
-                >
+                <div key={platform.id} className="card flex-1">
                   <div className="px-6 py-4">
                     <Link href={`/platforms/${platform.slug}`}>
                       <div className="font-cursive font-bold text-xl mb-2 text-center cursor-pointer">
