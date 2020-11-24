@@ -53,6 +53,9 @@ module.exports = {
       none: 'none',
     },
     extend: {
+      opacity: {
+        '80': '0.8',
+      },
       spacing: {
         '128': '32rem',
         '144': '36rem',
