@@ -20,27 +20,37 @@ export default function IndexPage() {
         <title>Nobody Games Alone</title>
       </Head>
       <Nav />
-      <div className="py-20 bg-gray-200">
-        <h1 className="text-5xl text-center text-accent-1">
-          Nobody Games Alone
-        </h1>
-        <h3 className="text-center text-2xl">
-          Un site pour trouver des gens avec qui jouer.
-        </h3>
-        <div className="justify-center pt-4 flex">
-          {data && data.currentUser && data.currentUser.username ? (
-            <Link href="/dashboard">
-              <a className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center">
-                Ma dashboard
-              </a>
-            </Link>
-          ) : (
-            <Link href="/users/new">
-              <a className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center">
-                C'est parti !
-              </a>
-            </Link>
-          )}
+      <div className="container grid grid-cols-2 gap-4 items-center">
+        <div className="illu">
+          <Image
+            src="/illu-landing.png"
+            alt="Nobody Games Alone illustration"
+            width={'1000'}
+            height={'1000'}
+          />
+        </div>
+        <div className="hero">
+          <h1 className="text-5xl font-cursive text-blue-DEFAULT">
+            Nobody Games Alone
+          </h1>
+          <h3 className="text-2xl">
+            Un site pour trouver des gens avec qui jouer.
+          </h3>
+          <div className="justify-center pt-4 grid grid-cols-2 gap-4">
+            {data && data.currentUser && data.currentUser.username ? (
+              <Link href="/dashboard">
+                <a className="btn">
+                  Ma dashboard
+                </a>
+              </Link>
+            ) : (
+              <Link href="/users/new">
+                <a className="btn">
+                  C'est parti !
+                </a>
+              </Link>
+            )}
+          </div>
         </div>
         <div className="justify-center pt-4 flex">
           <Link href="/together">

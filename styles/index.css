@@ -3,16 +3,23 @@
 
 
 /* Write your own custom base styles here */
-*{color:#fff}
+*{color:#fff};
 /* Start purging... */
 @tailwind components;
-h1{
-    @apply font-cursive
-}
+
+
 /* Stop purging. */
 
 /* Write your own custom component styles here */
-
+.btn{
+    @apply bg-pink-DEFAULT p-4 text-center shadow-sm transition duration-100 ease-in-out transform ;
+}
+.btn:hover{
+    @apply shadow-lg -translate-y-1;
+}
+.btn:active{
+    @apply shadow-sm translate-y-0;
+}
 
 /* Start purging... */
 @tailwind utilities;
