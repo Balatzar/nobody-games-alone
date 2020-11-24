@@ -20,7 +20,15 @@
 .btn:active{
     @apply shadow-sm translate-y-0;
 }
-
+.card{
+    @apply max-w-sm rounded overflow-hidden shadow-sm cursor-pointer bg-white-DEFAULT transition duration-100 ease-in-out transform ;
+}
+.card:hover{
+    @apply shadow-lg -translate-y-1;
+}
+.card *{
+    @apply text-purple-DEFAULT;
+}
 /* Start purging... */
 @tailwind utilities;
 /* Stop purging. */

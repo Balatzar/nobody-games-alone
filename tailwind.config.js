@@ -26,7 +26,10 @@ module.exports = {
       purple: {
         DEFAULT: '#2A0D2E',
         light: '#6A566D',
-      }
+      },
+      white: {
+        DEFAULT: '#ffffff',
+      },
     },
     container: {
       center: true,
