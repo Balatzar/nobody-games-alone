@@ -7,8 +7,8 @@ export default function Nav({ title }) {
   const { data, error } = useSwr(`/api/users/informations`);
 
   return (
-    <nav className="border-b border-pink-DEFAULT">
-      <ul className="flex justify-between items-center p-8">
+    <nav className="navbar bg-opacity-80">
+      <ul className="flex justify-between items-center p-4">
         <li>
           <Link href="/">
             <a>
