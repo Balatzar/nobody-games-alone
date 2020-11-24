@@ -1,8 +1,11 @@
 .btn{
-  @apply bg-pink-DEFAULT p-4 text-center shadow-sm transition duration-100 ease-in-out transform inline-block rounded-full	;
+  @apply bg-pink-DEFAULT p-4 text-center shadow-sm transition duration-100 ease-in-out transform inline-block rounded-full text-white-DEFAULT;;
+}
+.btn.blue{
+  @apply bg-blue-DEFAULT p-4 text-center shadow-sm transition duration-100 ease-in-out transform inline-block rounded-full	;
 }
 a.btn{
-  @apply text-white-DEFAULT;
+  
 }
 .btn.small{
   @apply p-2 my-4;
