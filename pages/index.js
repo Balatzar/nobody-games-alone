@@ -49,11 +49,10 @@ export default function IndexPage() {
               )}
             </div>
           </div>
-          <div className="justify-center pt-4 flex">
-          </div>
+          <div className="justify-center pt-4 flex"></div>
         </div>
         <div className="container-sm mx-auto grid grid grid-cols-2 gap-4 items-center">
-          <div clasName="text">
+          <div className="text">
             <h3 className="text-2xl text-right">
               Un petit tour d'horizon avant de se lancer ?
             </h3>
@@ -139,7 +138,7 @@ export default function IndexPage() {
             <p>Chargement...</p>
           )}
         </div>
-        
+
         <div className="container p-20">
           <h4 className="text-center underline">
             Ce qui doit etre mis en place :
