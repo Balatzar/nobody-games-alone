@@ -2,9 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import useSwr from "swr";
+import { signIn, signOut, useSession } from "next-auth/client";
 
 export default function Nav({ title }) {
   const { data, error } = useSwr(`/api/users/informations`);
+  const [session, loading] = useSession();
 
   return (
     <nav className="navbar bg-opacity-80">
@@ -29,6 +31,19 @@ export default function Nav({ title }) {
               </a>
             </li>
           ) : null}
+          <li>
+            {!session && (
+              <>
+                <button onClick={signIn}>Sign in</button>
+              </>
+            )}
+            {session && (
+              <>
+                Signed in as {session.user.email} <br />
+                <button onClick={signOut}>Sign out</button>
+              </>
+            )}
+          </li>
         </ul>
       </ul>
     </nav>
