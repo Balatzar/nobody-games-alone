@@ -2,6 +2,30 @@ import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 const db = require("../../../db");
 
+const Spotify = (options) => {
+  return {
+    id: "spotify",
+    name: "Spotify",
+    type: "oauth",
+    version: "2.0",
+    scope: "user-read-email",
+    params: { grant_type: "authorization_code" },
+    accessTokenUrl: "https://accounts.spotify.com/api/token",
+    authorizationUrl:
+      "https://accounts.spotify.com/authorize?response_type=code",
+    profileUrl: "https://api.spotify.com/v1/me",
+    profile: (profile) => {
+      return {
+        id: profile.id,
+        name: profile.display_name,
+        email: profile.email,
+        image: profile.images.length > 0 ? profile.images[0].url : undefined,
+      };
+    },
+    ...options,
+  };
+};
+
 const database = process.env.PGHOST
   ? {
       host: process.env.PGHOST,
@@ -33,7 +57,7 @@ const options = {
       clientId: process.env.TWITCH_CLIENT_ID,
       clientSecret: process.env.TWITCH_CLIENT_SECRET,
     }),
-    Providers.Spotify({
+    Spotify({
       clientId: process.env.SPOTIFY_CLIENT_ID,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
     }),
