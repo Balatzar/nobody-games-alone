@@ -4,6 +4,7 @@ import Link from "next/link";
 import Head from "next/head";
 import Image from "next/image";
 import useSWR from "swr";
+import { signIn } from "next-auth/client";
 
 export default function IndexPage() {
   const { data, error } = useSWR(`/api/pages/landing`);
@@ -26,8 +27,8 @@ export default function IndexPage() {
             <Image
               src="/illu-landing.png"
               alt="Nobody Games Alone illustration"
-              width={"1000"}
-              height={"1000"}
+              width={1000}
+              height={1000}
             />
           </div>
           <div className="hero">
@@ -38,20 +39,20 @@ export default function IndexPage() {
               Un site pour trouver des gens avec qui jouer.
             </h3>
             <div className="justify-center pt-4 grid grid-cols-2 gap-4">
-              {data && data.currentUser && data.currentUser.username ? (
+              {data && data.currentUser && data.currentUser.email ? (
                 <Link href="/dashboard">
                   <a className="btn">Ma dashboard</a>
                 </Link>
               ) : (
-                <Link href="/users/new">
-                  <a className="btn">C'est parti !</a>
-                </Link>
+                <a onClick={signIn} className="btn cursor-pointer">
+                  C'est parti !
+                </a>
               )}
             </div>
           </div>
           <div className="justify-center pt-4 flex"></div>
         </div>
-        <div className="container-sm mx-auto grid grid grid-cols-2 gap-4 items-center">
+        <div className="container-sm mx-auto grid grid-cols-2 gap-4 items-center">
           <div className="text">
             <h3 className="text-2xl text-right">
               Un petit tour d'horizon avant de se lancer ?
@@ -69,8 +70,8 @@ export default function IndexPage() {
             <Image
               src="/explore.png"
               alt="Nobody Games Alone illustration"
-              width={"1000"}
-              height={"900"}
+              width={1000}
+              height={900}
             />
           </div>
         </div>

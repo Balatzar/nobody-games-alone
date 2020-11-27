@@ -19,14 +19,31 @@ const database = process.env.PGHOST
 
 const options = {
   providers: [
-    // Passwordless / email sign in
+    // Passwordless
     Providers.Email({
       server: process.env.EMAIL_SERVER,
       from: process.env.EMAIL_FROM,
     }),
+    Providers.Discord({
+      clientId: process.env.DISCORD_CLIENT_ID,
+      clientSecret: process.env.DISCORD_CLIENT_SECRET,
+    }),
   ],
-  // Optional SQL or MongoDB database to persist users
   database: { ...database, type: "postgres" },
+  pages: {
+    newUser: "/users/new",
+  },
+  events: {
+    createUser: async (message) => {
+      console.log(message);
+    },
+  },
+  callbacks: {
+    session: async (session, user, sessionToken) => {
+      session.user.id = user.id;
+      return Promise.resolve(session);
+    },
+  },
 };
 
 export default (req, res) => NextAuth(req, res, options);

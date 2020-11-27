@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { setCookie } from "nookies";
 import Head from "next/head";
 import useSWR from "swr";
+import { signIn } from "next-auth/client";
 
 export default function UserNew() {
   const [username, setUsername] = useState("");
@@ -34,14 +35,12 @@ export default function UserNew() {
     };
 
     const res = await fetch(`/api/users`, query);
-    const data = await res.json();
-    const { temp_token, username: savedusername } = data;
-    setCookie(null, "temp_token", temp_token, {
-      maxAge: 10 * 365 * 24 * 60 * 60, // 10 years
-      path: "/",
-      sameSite: "strict",
-    });
-    router.push(`/games/new`);
+    setLoading(false);
+    if (res.ok) {
+      router.push(`/games/new`);
+    } else {
+      console.warn(res);
+    }
   }
 
   return (
@@ -58,10 +57,10 @@ export default function UserNew() {
             <p>
               Vous avez été invité(e) à rejoindre l'équipe{" "}
               <span className="font-bold">{team.name}</span> par{" "}
-              <span className="font-bold">{team.username}</span>. Nobody Games
-              Alone est un site pour trouver des disponibilités communes pour
-              jouer entre amis ! Vous allez pouvoir créer votre compte en 2
-              minutes et voir les disponibilités de vos amis !
+              <span className="font-bold">{team.name}</span>. Nobody Games Alone
+              est un site pour trouver des disponibilités communes pour jouer
+              entre amis ! Vous allez pouvoir créer votre compte en 2 minutes et
+              voir les disponibilités de vos amis !
             </p>
           </>
         ) : null}

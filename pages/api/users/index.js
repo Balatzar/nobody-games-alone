@@ -1,16 +1,17 @@
 const db = require("../../../db");
+import { withUser } from "../../../utils/withUser";
 
-export default async function index(req, res) {
+const handler = async (req, res) => {
   const { username, invite } = JSON.parse(req.body);
   try {
     const response = await db.query(
       `
-      INSERT INTO users (username)
-      VALUES
-        ($1)
-      RETURNING temp_token, username, id;
+      UPDATE users 
+      SET username = $1
+      WHERE id = $2
+      RETURNING id;
     `,
-      [username]
+      [username, req.currentUser.id]
     );
 
     const user = response.rows[0];
@@ -31,4 +32,6 @@ export default async function index(req, res) {
     console.warn(error);
     res.status(400).json(error);
   }
-}
+};
+
+export default withUser(handler);

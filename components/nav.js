@@ -24,26 +24,15 @@ export default function Nav({ title }) {
           </Link>
         </li>
         <ul className="flex justify-between items-center space-x-4">
-          {data && data.username ? (
-            <li key={data.username}>
+          {data && data?.email ? (
+            <li key={1}>
               <a href={`/dashboard`} className="btn-blue no-underline">
-                {data.username}
+                {data?.username || data?.email}
               </a>
+              <br />
+              <button onClick={signOut}>Sign out</button>
             </li>
           ) : null}
-          <li>
-            {!session && (
-              <>
-                <button onClick={signIn}>Sign in</button>
-              </>
-            )}
-            {session && (
-              <>
-                Signed in as {session.user.email} <br />
-                <button onClick={signOut}>Sign out</button>
-              </>
-            )}
-          </li>
         </ul>
       </ul>
     </nav>

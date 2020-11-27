@@ -55,6 +55,7 @@ const moment = require("moment");
       created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
       temp_token uuid DEFAULT uuid_generate_v4(),
+      username VARCHAR(255) UNIQUE,
       PRIMARY KEY (id)
     );
     CREATE INDEX idx_user_temp_token ON users(temp_token);
@@ -110,9 +111,9 @@ const moment = require("moment");
     );
     
     CREATE TABLE games_users_platforms (
-      game_id INT,
-      user_id INT,
-      platform_id INT,
+      game_id INT NOT NULL,
+      user_id INT NOT NULL,
+      platform_id INT NOT NULL,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       CONSTRAINT fk_game FOREIGN KEY(game_id) REFERENCES games(id),
       CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(id),
