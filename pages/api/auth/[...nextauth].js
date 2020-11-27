@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
+const db = require("../../../db");
 
 const database = process.env.PGHOST
   ? {
@@ -41,6 +42,15 @@ const options = {
   callbacks: {
     session: async (session, user, sessionToken) => {
       session.user.id = user.id;
+      const fetchUser = await db.query(
+        `
+        SELECT * FROM users
+        WHERE id = $1;
+      `,
+        [user.id]
+      );
+
+      session.user.username = fetchUser.rows[0].username;
       return Promise.resolve(session);
     },
   },

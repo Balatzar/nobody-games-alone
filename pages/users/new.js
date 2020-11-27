@@ -65,7 +65,6 @@ export default function UserNew() {
           </>
         ) : null}
         <h3 className="text-center text-2xl">Choisissez un pseudonyme</h3>
-        <p>Votre compte sera stocké en cookie sur votre ordinateur</p>
         <form onSubmit={submitUser}>
           <label>Pseudonyme</label>
           {loading ? (

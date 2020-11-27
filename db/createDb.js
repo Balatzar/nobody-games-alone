@@ -54,11 +54,10 @@ const moment = require("moment");
       image VARCHAR(255),
       created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      temp_token uuid DEFAULT uuid_generate_v4(),
       username VARCHAR(255) UNIQUE,
       PRIMARY KEY (id)
     );
-    CREATE INDEX idx_user_temp_token ON users(temp_token);
+    CREATE INDEX idx_user_username ON users(username);
     
     CREATE TABLE verification_requests (
       id SERIAL,
