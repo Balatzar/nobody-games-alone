@@ -33,15 +33,14 @@ const options = {
       clientId: process.env.TWITCH_CLIENT_ID,
       clientSecret: process.env.TWITCH_CLIENT_SECRET,
     }),
+    Providers.Spotify({
+      clientId: process.env.SPOTIFY_CLIENT_ID,
+      clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+    }),
   ],
   database: { ...database, type: "postgres" },
   pages: {
     newUser: "/users/new",
-  },
-  events: {
-    createUser: async (message) => {
-      console.log(message);
-    },
   },
   callbacks: {
     session: async (session, user, sessionToken) => {

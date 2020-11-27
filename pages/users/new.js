@@ -57,10 +57,10 @@ export default function UserNew() {
             <p>
               Vous avez été invité(e) à rejoindre l'équipe{" "}
               <span className="font-bold">{team.name}</span> par{" "}
-              <span className="font-bold">{team.name}</span>. Nobody Games Alone
-              est un site pour trouver des disponibilités communes pour jouer
-              entre amis ! Vous allez pouvoir créer votre compte en 2 minutes et
-              voir les disponibilités de vos amis !
+              <span className="font-bold">{team.username}</span>. Nobody Games
+              Alone est un site pour trouver des disponibilités communes pour
+              jouer entre amis ! Vous allez pouvoir créer votre compte en 2
+              minutes et voir les disponibilités de vos amis !
             </p>
           </>
         ) : null}
