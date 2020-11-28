@@ -6,7 +6,6 @@ import { signIn, signOut, useSession } from "next-auth/client";
 
 export default function Nav({ title }) {
   const [session, loading] = useSession();
-  console.log(session);
 
   return (
     <nav className="navbar bg-opacity-80">
