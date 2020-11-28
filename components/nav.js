@@ -26,7 +26,7 @@ export default function Nav({ title }) {
           {!loading ? (
             <li>
               <a href={`/dashboard`} className="btn-blue no-underline">
-                {session.user?.username || session.user?.email}
+                {session?.user?.username || session?.user?.email}
               </a>
               <br />
               <button onClick={signOut}>Sign out</button>
