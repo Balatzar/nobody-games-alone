@@ -33,6 +33,9 @@ const database = process.env.PGHOST
       username: process.env.PGUSER,
       password: process.env.PGPASSWORD,
       database: process.env.PGDATABASE,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     }
   : {
       host: "127.0.0.1",
@@ -62,9 +65,7 @@ const options = {
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
     }),
   ],
-  database: process.env.PGURL
-    ? process.env.PGURL
-    : { ...database, type: "postgres" },
+  database: { ...database, type: "postgres" },
   pages: {
     newUser: "/users/new",
   },
