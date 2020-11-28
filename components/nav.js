@@ -5,8 +5,8 @@ import useSwr from "swr";
 import { signIn, signOut, useSession } from "next-auth/client";
 
 export default function Nav({ title }) {
-  const { data, error } = useSwr(`/api/users/informations`);
   const [session, loading] = useSession();
+  console.log(session);
 
   return (
     <nav className="navbar bg-opacity-80">
@@ -24,10 +24,10 @@ export default function Nav({ title }) {
           </Link>
         </li>
         <ul className="flex justify-between items-center space-x-4">
-          {data && data?.email ? (
-            <li key={1}>
+          {!loading ? (
+            <li>
               <a href={`/dashboard`} className="btn-blue no-underline">
-                {data?.username || data?.email}
+                {session.user?.username || session.user?.email}
               </a>
               <br />
               <button onClick={signOut}>Sign out</button>
