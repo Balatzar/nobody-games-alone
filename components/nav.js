@@ -23,7 +23,7 @@ export default function Nav({ title }) {
           </Link>
         </li>
         <ul className="flex justify-between items-center space-x-4">
-          {!loading ? (
+          {!loading && session?.user ? (
             <li>
               <a href={`/dashboard`} className="btn-blue no-underline">
                 {session?.user?.username || session?.user?.email}

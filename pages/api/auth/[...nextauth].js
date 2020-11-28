@@ -62,7 +62,9 @@ const options = {
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
     }),
   ],
-  database: { ...database, type: "postgres" },
+  database: process.env.PGURL
+    ? process.env.PGURL
+    : { ...database, type: "postgres" },
   pages: {
     newUser: "/users/new",
   },
