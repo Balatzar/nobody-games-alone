@@ -4,14 +4,71 @@
 /* Write your own custom base styles here */
 /* Start purging... */
 @tailwind components;
-@import "base.css";
+
+/* Base */
+.page {
+  padding-top: 5rem;
+}
+h1,
+h2,
+h3,
+h4,
+p,
+a,
+ul,
+li,
+label {
+  color: #fff;
+}
 
 /* Stop purging. */
 
 /* Write your own custom component styles here */
-@import "components/card";
-@import "components/button";
-@import "components/navbar";
+/* Cards */
+.card {
+  @apply max-w-sm rounded-lg overflow-hidden shadow-sm cursor-pointer bg-white-DEFAULT transition duration-100 ease-in-out transform;
+}
+.card p,
+.card h1,
+.card h2,
+.card h3,
+.card h4 {
+  @apply text-purple-DEFAULT;
+}
+.card:hover {
+  @apply shadow-lg -translate-y-1;
+}
+.card:hover .btn {
+  @apply shadow-lg -translate-y-1;
+}
+.card:active .btn {
+  @apply shadow-sm translate-y-0;
+}
+
+/* Buttons */
+.btn {
+  @apply bg-pink-DEFAULT p-4 text-center shadow-sm transition duration-100 ease-in-out transform inline-block rounded-full text-white-DEFAULT;
+}
+.btn.blue {
+  @apply bg-blue-DEFAULT p-4 text-center shadow-sm transition duration-100 ease-in-out transform inline-block rounded-full;
+}
+a.btn {
+}
+.btn.small {
+  @apply p-2 my-4;
+}
+.btn:hover {
+  @apply shadow-lg -translate-y-1;
+}
+.btn:active {
+  @apply shadow-sm translate-y-0;
+}
+
+/* Navbar */
+
+.navbar {
+  @apply border-b border-pink-DEFAULT fixed w-full z-50 bg-purple-DEFAULT;
+}
 
 /* Start purging... */
 @tailwind utilities;
