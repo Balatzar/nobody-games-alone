@@ -29,9 +29,13 @@ export default function Nav({ title }) {
                 {session?.user?.username || session?.user?.email}
               </a>
               <br />
-              <button onClick={signOut}>Sign out</button>
+              <button onClick={() => signOut({ callbackUrl: "/" })}>
+                Déconnexion
+              </button>
             </li>
-          ) : null}
+          ) : (
+            <button onClick={signIn}>Connexion</button>
+          )}
         </ul>
       </ul>
     </nav>
