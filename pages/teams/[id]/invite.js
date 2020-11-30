@@ -9,7 +9,7 @@ const db = require("../../../db");
 export async function getServerSideProps(context) {
   const fetchTeam = await db.query(
     `
-    SELECT name, invite_token FROM teams
+    SELECT name, invite_token, id FROM teams
     WHERE id = $1;
   `,
     [context.params.id]
@@ -42,7 +42,7 @@ export default function TimeslotsInvite({ currentTeam }) {
 
     const res = await fetch(`/api/teams/invite`, query);
     if (res.status === 200) {
-      router.push("/dashboard");
+      router.push(`/teams/${currentTeam.id}`);
     } else {
       setLoading(false);
       const error = await res.json();
@@ -125,7 +125,7 @@ export default function TimeslotsInvite({ currentTeam }) {
         <p className="absolute" style={{ top: "70px" }}>
           Ou partagez ce lien :{" "}
           <span className="underline">
-            {process.env.NEXT_PUBLIC_DOMAIN_URL}/users/new?invite=
+            {process.env.NEXT_PUBLIC_DOMAIN_URL}/users/welcome?invite=
             {currentTeam.invite_token}
           </span>
         </p>

@@ -192,6 +192,9 @@ export default function IndexPage() {
                   Ajouter un système de créneaux entre joueurs d'une team, avec
                   reminder mail/sms
                 </li>
+                <li>
+                  Sur la page welcome ajouter les jeux des gens dans la team
+                </li>
               </ul>
             </li>
             <li>

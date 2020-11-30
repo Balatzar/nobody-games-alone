@@ -1,28 +1,22 @@
 import Layout from "../../components/layout";
 import Nav from "../../components/nav";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { setCookie } from "nookies";
 import Head from "next/head";
 import useSWR from "swr";
 import { signIn } from "next-auth/client";
+import { parseCookies } from "nookies";
 
 export default function UserNew() {
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
+  const [invite, setInvite] = useState("");
   const router = useRouter();
-  const { invite } = router.query;
 
-  const { data: team, error } = useSWR(
-    `/api/teams/informations?invite=${invite}`,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  );
-  if (error) {
-    console.warn(error);
-  }
+  useEffect(() => {
+    const cookies = parseCookies(document.cookie);
+    setInvite(cookies.invite_token);
+  });
 
   async function submitUser(event) {
     event.preventDefault();
@@ -51,19 +45,6 @@ export default function UserNew() {
       <Nav title={true} />
 
       <div className="p-20 bg-gray-200 h-screen overflow-scroll pb-30">
-        {invite && team ? (
-          <>
-            <h3 className="text-center text-4xl">Bienvenue !</h3>
-            <p>
-              Vous avez été invité(e) à rejoindre l'équipe{" "}
-              <span className="font-bold">{team.name}</span> par{" "}
-              <span className="font-bold">{team.username}</span>. Nobody Games
-              Alone est un site pour trouver des disponibilités communes pour
-              jouer entre amis ! Vous allez pouvoir créer votre compte en 2
-              minutes et voir les disponibilités de vos amis !
-            </p>
-          </>
-        ) : null}
         <h3 className="text-center text-2xl">Choisissez un pseudonyme</h3>
         <form onSubmit={submitUser}>
           <label>Pseudonyme</label>

@@ -23,9 +23,9 @@ const handler = async (req, res) => {
       subject: `Vous avez été invité par ${req.currentUser.username} !`,
       html: `Bonjour !
     
-    Vous avez été invité par votre ami ${req.currentUser.username} a rejoindre son équipe ${currentTeam.name} sur le site Nobody Games Alone !
+    Vous avez été invité par votre ami(e) ${req.currentUser.username} à rejoindre son équipe ${currentTeam.name} sur le site Nobody Games Alone !
     
-    <a href="${process.env.NEXT_PUBLIC_DOMAIN_URL}/users/new?invite=${currentTeam.invite_token}">C'est parti !</a>
+    <a href="${process.env.NEXT_PUBLIC_DOMAIN_URL}/users/welcome?invite=${currentTeam.invite_token}">C'est parti !</a>
     `,
     };
 

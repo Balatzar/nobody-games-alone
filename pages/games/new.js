@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
-import { parseCookies, setCookie } from "nookies";
 
 export default function GamesNew() {
   const [games, setGames] = useState([]);
