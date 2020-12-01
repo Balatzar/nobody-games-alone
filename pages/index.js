@@ -5,8 +5,11 @@ import Head from "next/head";
 import Image from "next/image";
 import useSWR from "swr";
 import { signIn } from "next-auth/client";
+import useTranslation from "next-translate/useTranslation";
 
 export default function IndexPage() {
+  const { t } = useTranslation();
+
   const { data, error } = useSWR(`/api/pages/landing`);
   if (error) {
     console.warn(error);
@@ -35,17 +38,15 @@ export default function IndexPage() {
             <h1 className="text-5xl font-cursive text-blue-DEFAULT">
               Nobody Games Alone
             </h1>
-            <h3 className="text-2xl">
-              Un site pour trouver des gens avec qui jouer.
-            </h3>
+            <h3 className="text-2xl">{t("landing:title")}</h3>
             <div className="justify-center pt-4 grid grid-cols-2 gap-4">
               {data && data.currentUser && data.currentUser.email ? (
                 <Link href="/dashboard">
-                  <a className="btn">Ma dashboard</a>
+                  <a className="btn">{t("landing:button-dashboard")}</a>
                 </Link>
               ) : (
                 <a onClick={signIn} className="btn cursor-pointer">
-                  C'est parti !
+                  {t("landing:button-signup")}
                 </a>
               )}
             </div>
@@ -54,14 +55,12 @@ export default function IndexPage() {
         </div>
         <div className="container-sm mx-auto grid grid-cols-2 gap-4 items-center">
           <div className="text">
-            <h3 className="text-2xl text-right">
-              Un petit tour d'horizon avant de se lancer ?
-            </h3>
+            <h3 className="text-2xl text-right">{t("landing:explore")}</h3>
             <div className="justify-center pt-4 grid grid-cols-2 gap-4">
               <p>&nbsp;</p>
               <Link href="/together">
                 <a className="btn bg-blue-DEFAULT text-purple-DEFAULT">
-                  Explorer
+                  {t("landing:button-explore")}
                 </a>
               </Link>
             </div>
@@ -76,7 +75,7 @@ export default function IndexPage() {
           </div>
         </div>
         <h2 className="text-3xl text-center text-accent-1">
-          Nos utilisateurs jouent sur...
+          {t("landing:user-play")}
         </h2>
         <div className="flex flex-wrap space-x-4 py-8">
           {platforms ? (
@@ -105,7 +104,9 @@ export default function IndexPage() {
                     })}
                     {platform.games.length > 3 && (
                       <Link href={`/platforms/${platform.slug}`}>
-                        <a className="btn small w-full">Plus de jeux</a>
+                        <a className="btn small w-full">
+                          {t("landing:more-games")}
+                        </a>
                       </Link>
                     )}
                   </div>
@@ -113,11 +114,11 @@ export default function IndexPage() {
               );
             })
           ) : (
-            <p>Chargement...</p>
+            <p>{t("common:loading")}</p>
           )}
         </div>
         <h2 className="text-3xl text-center text-accent-1">
-          Nos utilisateurs jouent à...
+          {t("landing:user-games")}
         </h2>
         <div className="flex flex-wrap space-x-4 py-8">
           {games ? (
@@ -136,7 +137,7 @@ export default function IndexPage() {
               );
             })
           ) : (
-            <p>Chargement...</p>
+            <p>{t("common:loading")}</p>
           )}
         </div>
 
